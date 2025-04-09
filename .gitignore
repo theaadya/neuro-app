@@ -21,3 +21,6 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+/neuro-api/__pycache__
+/neuro-api/uploads
