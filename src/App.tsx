@@ -23,6 +23,7 @@ import HomePage from "./components/HomePage";
 import CreateMindMap from "./components/createMindMap/CreateMindMap";
 import SetPriorityLevel from "./components/SetPriority/SetPriorityLevel";
 
+import TaskManage1 from "./components/Task1/TaskMange1";
 
 function App() {
   return (
@@ -51,6 +52,9 @@ function App() {
         <Route path="/create-mind-map" element={<CreateMindMap />} />
         <Route path="/setpriority" element={<SetPriorityLevel />} />
 
+        <Route path="/task-1" element={<TaskManage1 />} />
+        
+        
       </Routes>
     </Router>
   );
