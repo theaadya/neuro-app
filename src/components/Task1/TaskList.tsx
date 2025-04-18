@@ -1,8 +1,11 @@
 "use client";
 import React, { useState } from "react";
 import TaskItem from "./TaskItem";
+import { useNavigate } from "react-router-dom";
 
 const TaskList = () => {
+  const navigate = useNavigate();
+
   const [tasks, setTasks] = useState([
     { id: 1, name: "Task - 1", status: "Ongoing" },
     { id: 2, name: "Task - 2", status: "Done" },
@@ -25,7 +28,7 @@ const TaskList = () => {
       <div className="flex flex-wrap gap-5 justify-between text-white max-md:max-w-full">
         <h2 className="self-start mt-5">View Tasks</h2>
         <button
-          onClick={handleAddTask}
+          onClick={() => navigate("/addtask")}
           className="px-16 pt-3 pb-6 bg-stone-400 rounded-[80px] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] max-md:px-5"
         >
           ADD TASK
