@@ -20,6 +20,7 @@ import Mg1Layout from "./components/desktop11/Mg1Layout";
 import Desktop4 from "./components/desktop4/Desktop4";
 import AddTask from "./components/addTask/AddTask";
 
+import HomePage from "./components/HomePage";
 
 function App() {
   return (
@@ -45,6 +46,7 @@ function App() {
         <Route path="/desktop4" element={<Desktop4 />} />
         <Route path="/addtask" element={<AddTask />} />
         {/* Add more routes as needed */}
+        <Route path="/home" element={<HomePage />} />
       </Routes>
     </Router>
   );
