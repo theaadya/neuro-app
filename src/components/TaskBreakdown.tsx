@@ -13,7 +13,9 @@ export const TaskBreakdown: React.FC = () => {
           className="mt-5 max-md:max-w-full">
           Create Checklist
         </ActionButton>
-        <ActionButton className="mt-5 max-md:max-w-full">
+        <ActionButton 
+          onClick={() => navigate("/create-mind-map")}
+          className="mt-5 max-md:max-w-full">
           Create Mind Map
         </ActionButton>
       </div>

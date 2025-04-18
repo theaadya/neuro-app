@@ -1,9 +1,14 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 export const SidePanel = () => {
+  const navigate = useNavigate();
+
   return (
     <aside className="flex flex-col mt-24 text-2xl text-black max-md:mt-10">
-      <button className="self-center px-9 py-6 max-w-full bg-rose-300 bg-opacity-50 rounded-[80px] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] w-[285px] max-md:px-5">
+      <button
+        onClick={() => navigate("/setpriority")} 
+        className="self-center px-9 py-6 max-w-full bg-rose-300 bg-opacity-50 rounded-[80px] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] w-[285px] max-md:px-5">
         Set Priority Level
       </button>
 
