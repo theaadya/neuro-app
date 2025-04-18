@@ -24,6 +24,7 @@ import CreateMindMap from "./components/createMindMap/CreateMindMap";
 import SetPriorityLevel from "./components/SetPriority/SetPriorityLevel";
 import ProductivityDashboard from "./components/Insight/ProductivityDashboard";
 import TaskManage1 from "./components/Task1/TaskMange1";
+import Desktop30 from "./components/desktop30/Desktop30";
 
 function App() {
   return (
@@ -53,6 +54,7 @@ function App() {
         <Route path="/setpriority" element={<SetPriorityLevel />} />
         <Route path = "/insight" element={<ProductivityDashboard />}/>
         <Route path="/task-1" element={<TaskManage1 />} />
+        <Route path="/desktop30" element={<Desktop30 />} />
         
         
       </Routes>
