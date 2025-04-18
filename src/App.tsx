@@ -17,6 +17,8 @@ import DataPrivacyConsent from "./components/datacollectionpage/DataPrivacyConse
 import { DataPrivacyConsent1 } from "./components/dataprivacypage/DataPrivacyConsent";
 import Dashboard from "./components/desktop5/Dashboard";
 import Mg1Layout from "./components/desktop11/Mg1Layout";
+import Desktop4 from "./components/desktop4/Desktop4";
+import AddTask from "./components/addTask/AddTask";
 
 
 function App() {
@@ -40,6 +42,9 @@ function App() {
         <Route path="/DataPrivacyConsent" element={<DataPrivacyConsent1 />} />
         <Route path="/Dashboard" element={<Dashboard />} />
         <Route path="/desktop11" element={<Mg1Layout />} />
+        <Route path="/desktop4" element={<Desktop4 />} />
+        <Route path="/addtask" element={<AddTask />} />
+        {/* Add more routes as needed */}
       </Routes>
     </Router>
   );
