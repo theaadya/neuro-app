@@ -19,8 +19,10 @@ import Dashboard from "./components/desktop5/Dashboard";
 import Mg1Layout from "./components/desktop11/Mg1Layout";
 import Desktop4 from "./components/desktop4/Desktop4";
 import AddTask from "./components/addTask/AddTask";
-
 import HomePage from "./components/HomePage";
+import CreateMindMap from "./components/createMindMap/CreateMindMap";
+import SetPriorityLevel from "./components/SetPriority/SetPriorityLevel";
+
 
 function App() {
   return (
@@ -45,8 +47,10 @@ function App() {
         <Route path="/desktop11" element={<Mg1Layout />} />
         <Route path="/desktop4" element={<Desktop4 />} />
         <Route path="/addtask" element={<AddTask />} />
-        {/* Add more routes as needed */}
         <Route path="/home" element={<HomePage />} />
+        <Route path="/create-mind-map" element={<CreateMindMap />} />
+        <Route path="/setpriority" element={<SetPriorityLevel />} />
+
       </Routes>
     </Router>
   );
