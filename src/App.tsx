@@ -17,7 +17,7 @@ import DataPrivacyConsent from "./components/datacollectionpage/DataPrivacyConse
 import { DataPrivacyConsent1 } from "./components/dataprivacypage/DataPrivacyConsent";
 import Dashboard from "./components/desktop5/Dashboard";
 import Mg1Layout from "./components/desktop11/Mg1Layout";
-
+import HomePage from "./components/HomePage";
 
 function App() {
   return (
@@ -39,7 +39,7 @@ function App() {
         <Route path="/DataPrivacy" element={<DataPrivacyConsent />} />
         <Route path="/DataPrivacyConsent" element={<DataPrivacyConsent1 />} />
         <Route path="/Dashboard" element={<Dashboard />} />
-        <Route path="/desktop11" element={<Mg1Layout />} />
+        <Route path="/home" element={<HomePage />} />
       </Routes>
     </Router>
   );
