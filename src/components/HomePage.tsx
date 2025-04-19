@@ -4,8 +4,11 @@ import {NavigationBar} from "./NavigationBar";
 import NotificationCard from "./NotificationCard";
 import {ActionButton} from "./ActionButton";
 import AiCompanionFooter from "./AiCompanionFooter";
+import { useNavigate } from "react-router-dom";
 
 function HomePage() {
+  const navigate = useNavigate();
+
   return (
     <main className="overflow-hidden bg-black">
       <section className="flex flex-col items-start pt-8 pb-16 w-full bg-white rounded-xl border border-black border-solid max-md:max-w-full">
@@ -46,19 +49,24 @@ function HomePage() {
 
                 {/* Action buttons */}
                 <ActionButton
+                  onClick={() => navigate("/task-1")} 
                   className="mt-24 max-md:mt-10"
                 > Manage your tasks
                 </ActionButton>
                 <ActionButton
-                 className="mt-8" >
+                  onClick={() => navigate("/Dashboard")} 
+                  className="mt-8" >
                   Manage your meetings
                 </ActionButton>
                 <ActionButton
+                  onClick={() => navigate("/insight")}
                   className="mt-6"
                 >
                   Get your productivity trends
                 </ActionButton>
-                <ActionButton className="mt-6">
+                <ActionButton 
+                onClick={() => navigate("/desktop30")}
+                className="mt-6">
                 Be a part of Community
                 </ActionButton>
               </div>
