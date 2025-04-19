@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import CameraCapture from "./components/CameraCapture";
 import SignUpPage from "./components/SignUpPage";
 import TaskManagement from "./components/TaskManagement";
@@ -18,12 +18,24 @@ import { DataPrivacyConsent1 } from "./components/dataprivacypage/DataPrivacyCon
 import Dashboard from "./components/desktop5/Dashboard";
 import Mg1Layout from "./components/desktop11/Mg1Layout";
 import HomePage from "./components/HomePage";
+import Chatbot from "./components/chatbot/Chatbot";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<TaskManagement />} />
+        <Route path="/" element={<Navigate to="/home" replace />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route
+          path="/home"
+          element={
+            <ProtectedRoute>
+              <HomePage />
+            </ProtectedRoute>
+          }
+        />
+        <Route path="/taskmanage" element={<TaskManagement />} />
         <Route path="/checklist" element={<TaskCheckList />} />
         <Route path="/camera" element={<CameraCapture />} />
         <Route path="/signup" element={<SignUpPage />} />
@@ -40,6 +52,7 @@ function App() {
         <Route path="/DataPrivacyConsent" element={<DataPrivacyConsent1 />} />
         <Route path="/Dashboard" element={<Dashboard />} />
         <Route path="/home" element={<HomePage />} />
+        <Route path="/chatbot" element={<Chatbot />} />
       </Routes>
     </Router>
   );

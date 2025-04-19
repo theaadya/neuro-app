@@ -1,8 +1,23 @@
 "use client";
-import * as React from "react";
 import { SignUpForm } from "./SignUpForm";
+import { useNavigate } from "react-router-dom";
+import { login, isAuthenticated } from "../auth";
+import { useEffect } from "react";
 
 export default function SignUpPage() {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isAuthenticated()) {
+      navigate("/home");
+    }
+  }, []);
+
+  const handleSignup = () => {
+    login();
+    navigate("/home");
+  };
+
   return (
     <main className="overflow-hidden text-3xl text-center bg-black">
       <div className="flex relative flex-col items-center px-20 pt-14 pb-28 w-full rounded-none min-h-[1024px] max-md:px-5 max-md:pb-24 max-md:max-w-full">
@@ -18,7 +33,10 @@ export default function SignUpPage() {
             className="object-contain z-10 max-w-full aspect-square shadow-[0px_4px_4px_rgba(0,0,0,0.25)] w-[277px]"
           />
           <SignUpForm />
-          <button className="px-16 py-4 mt-8 max-w-full text-white whitespace-nowrap bg-red-400 rounded-[100px] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] w-[241px] max-md:px-5">
+          <button 
+            className="px-16 py-4 mt-8 max-w-full text-white whitespace-nowrap bg-red-400 rounded-[100px] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] w-[241px] max-md:px-5"
+            onClick={handleSignup}
+          >
             SignUp
           </button>
           <p className="mt-7 text-xl text-black">
