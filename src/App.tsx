@@ -15,7 +15,7 @@ import SocialSupportSettings from './components/support5';
 import TaskManagementPreference from "./components/mg1";
 import DataPrivacyConsent from "./components/datacollectionpage/DataPrivacyConsent";
 import { DataPrivacyConsent1 } from "./components/dataprivacypage/DataPrivacyConsent";
-import Dashboard from "./components/desktop5/Dashboard";
+import MeetingDashboard from "./components/desktop5/MeetingDashboard";
 import Mg1Layout from "./components/desktop11/Mg1Layout";
 import Desktop4 from "./components/desktop4/Desktop4";
 import AddTask from "./components/addTask/AddTask";
@@ -57,7 +57,7 @@ function App() {
         <Route path="/mg1" element={<TaskManagementPreference />} />
         <Route path="/DataPrivacy" element={<DataPrivacyConsent />} />
         <Route path="/DataPrivacyConsent" element={<DataPrivacyConsent1 />} />
-        <Route path="/Dashboard" element={<Dashboard />} />
+        <Route path="/manage" element={<MeetingDashboard />} />
         <Route path="/desktop11" element={<Mg1Layout />} />
         <Route path="/desktop4" element={<Desktop4 />} />
         <Route path="/addtask" element={<AddTask />} />

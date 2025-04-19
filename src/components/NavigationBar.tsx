@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, NavLink } from "react-router-dom";
 import { isAuthenticated, logout } from "../auth";
 
 export const NavigationBar: React.FC = () => {
@@ -15,6 +15,9 @@ export const NavigationBar: React.FC = () => {
     }
   };
 
+  const linkBase = "my-auto px-4 py-1 rounded-2xl";
+  const activeStyle = "bg-white bg-opacity-50";
+
   return (
     <nav className="relative flex justify-center items-center w-full py-2 text-xl text-black">
       {/* Logo (Left-Aligned) */}
@@ -26,10 +29,42 @@ export const NavigationBar: React.FC = () => {
 
       {/* Centered Navigation Items */}
       <div className="flex items-center gap-6 bg-rose-300 bg-opacity-50 px-8 py-2 rounded-full shadow-md max-md:px-4 max-md:flex-wrap">
-        <a href="#" className="my-auto">About</a>
-        <a href="#" className="px-4 py-1 bg-white bg-opacity-50 rounded-2xl">Task</a>
-        <a href="#" className="my-auto">Manage</a>
-        <a href="#" className="my-auto">Insight</a>
+        <NavLink
+          to="/about"
+          className={({ isActive }) =>
+            `${linkBase} ${isActive ? activeStyle : ""}`
+          }
+        >
+          About
+        </NavLink>
+
+        <NavLink
+          to="/taskmanage"
+          className={({ isActive }) =>
+            `${linkBase} ${isActive ? activeStyle : ""}`
+          }
+        >
+          Task
+        </NavLink>
+
+        <NavLink
+          to="/manage"
+          className={({ isActive }) =>
+            `${linkBase} ${isActive ? activeStyle : ""}`
+          }
+        >
+          Manage
+        </NavLink>
+
+        <NavLink
+          to="/insight"
+          className={({ isActive }) =>
+            `${linkBase} ${isActive ? activeStyle : ""}`
+          }
+        >
+          Insight
+        </NavLink>
+
         <span
           className="my-auto cursor-pointer hover:text-red-500"
           onClick={handleAuthClick}

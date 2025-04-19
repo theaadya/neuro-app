@@ -1,6 +1,6 @@
 "use client";
 import * as React from "react";
-import { Navigation } from "./Navigation";
+import { NavigationBar } from "../NavigationBar";
 import { CommunityHeader } from "./CommunityHeader";
 import { ContentSection } from "./ContentSection";
 
@@ -13,7 +13,7 @@ const Desktop30: React.FC = () => {
           className="object-cover absolute inset-0 size-full"
           alt="Background"
         />
-        <Navigation />
+        <NavigationBar />
         <div className="relative self-end mt-20 w-full max-w-[1293px] max-md:mt-10 max-md:max-w-full">
           <CommunityHeader />
           <ContentSection />

@@ -1,6 +1,6 @@
 "use client";
 import * as React from "react";
-import { NavigationBar } from "./NavigationBar";
+import { NavigationBar } from "../NavigationBar";
 import { TaskList } from "./TaskList";
 import { ChatWidget } from "./ChatWidget";
 import { PriorityHeader } from "./PriorityHeader";
