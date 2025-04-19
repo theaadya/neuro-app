@@ -3,8 +3,11 @@
 import * as React from "react";
 import { QuestionCard } from "./QuestionCard";
 import { NavigationButtons } from "./NavigationButtons";
+import { useNavigate } from "react-router-dom";
 
 export const CognitivePreferencesQuestion: React.FC = () => {
+  const navigate = useNavigate();
+
   const [selectedAnswer, setSelectedAnswer] = React.useState<string | null>(
     null,
   );
@@ -16,6 +19,7 @@ export const CognitivePreferencesQuestion: React.FC = () => {
   const handleNext = () => {
     if (selectedAnswer) {
       console.log("Selected answer:", selectedAnswer);
+      navigate("/CognitivePreferencesForm");
       // Handle navigation to next question
     }
   };
@@ -23,6 +27,7 @@ export const CognitivePreferencesQuestion: React.FC = () => {
   const handleSkip = () => {
     // Handle skip logic
     console.log("Question skipped");
+    navigate("/CognitivePreferencesForm");
   };
 
   return (
