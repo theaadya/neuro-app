@@ -1,13 +1,27 @@
 import * as React from "react";
+import { useNavigate } from "react-router-dom";
+import { isAuthenticated, logout } from "../auth";
 
 export const NavigationBar: React.FC = () => {
+  const navigate = useNavigate();
+  const loggedIn = isAuthenticated();
+
+  const handleAuthClick = () => {
+    if (loggedIn) {
+      logout();
+      navigate("/login");
+    } else {
+      navigate("/login");
+    }
+  };
+
   return (
     <nav className="relative flex justify-center items-center w-full py-2 text-xl text-black">
       {/* Logo (Left-Aligned) */}
       <img
         src="https://cdn.builder.io/api/v1/image/assets/TEMP/86f46b84d12b5026b8ba8e909089ec180985bca8?placeholderIfAbsent=true&apiKey=2cda7839db8f4018bae6be70e9c6edce"
         alt="Logo"
-        className="absolute left-10 w-32 object-contain" 
+        className="absolute left-10 w-32 object-contain"
       />
 
       {/* Centered Navigation Items */}
@@ -16,7 +30,12 @@ export const NavigationBar: React.FC = () => {
         <a href="#" className="px-4 py-1 bg-white bg-opacity-50 rounded-2xl">Task</a>
         <a href="#" className="my-auto">Manage</a>
         <a href="#" className="my-auto">Insight</a>
-        <a href="#" className="my-auto">Login</a>
+        <span
+          className="my-auto cursor-pointer hover:text-red-500"
+          onClick={handleAuthClick}
+        >
+          {loggedIn ? "Logout" : "Login"}
+        </span>
       </div>
     </nav>
   );

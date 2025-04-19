@@ -1,13 +1,23 @@
 "use client";
 
-import * as React from "react";
 import { LoginForm } from "./LoginForm";
 import { LoginButton } from "./LoginButton";
+import { useNavigate } from "react-router-dom";
+import { login, isAuthenticated } from "../auth";
+import { useEffect } from "react";
 
 function LoginPage() {
-  const handleLogin = (email: string, password: string) => {
-    // Handle login logic here
-    console.log("Login attempt with:", email, password);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isAuthenticated()) {
+      navigate("/home");
+    }
+  }, []);
+
+  const handleLogin = () => {
+    login();
+    navigate("/home");
   };
 
   return (
@@ -25,12 +35,15 @@ function LoginPage() {
             className="object-contain z-10 max-w-full aspect-square shadow-[0px_4px_4px_rgba(0,0,0,0.25)] w-[277px]"
           />
           <LoginForm onSubmit={handleLogin} />
-          <LoginButton onClick={() => {}} className="mt-8 w-[241px]" />
+          <LoginButton onClick={handleLogin} className="mt-8 w-[241px]" />
           <p className="mt-7 text-xl text-black">
             Not a user?{" "}
-            <a href="/signup" className="underline hover:text-red-500">
-              SignUP
-            </a>
+            <span
+              onClick={() => navigate("/signup")}
+              className="underline hover:text-red-500 cursor-pointer"
+            >
+            Sign up
+          </span>
           </p>
         </div>
       </div>
