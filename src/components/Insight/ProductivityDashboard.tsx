@@ -1,6 +1,6 @@
 "use client";
 import * as React from "react";
-import NavigationBar from "./NavigationBar";
+import {NavigationBar} from "../NavigationBar";
 import ProductivityTrends from "./ProductivityTrends";
 import MetricsPanel from "./MetricsPanel";
 import ChatButton from "./ChatButton";

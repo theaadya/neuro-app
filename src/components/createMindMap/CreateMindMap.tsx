@@ -1,6 +1,6 @@
 "use client";
 import * as React from "react";
-import { NavigationBar } from "./NavigationBar";
+import { NavigationBar } from "../NavigationBar";
 import { TaskHeader } from "./TaskHeader";
 import { MindMapContent } from "./MindMapContent";
 

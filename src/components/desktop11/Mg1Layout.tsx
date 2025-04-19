@@ -1,6 +1,6 @@
 "use client";
 import * as React from "react";
-import { Mg1Nav } from "./Mg1Nav";
+import { NavigationBar } from "../NavigationBar";
 import { Mg1Content } from "./Mg1Content";
 
 export default function Mg1Layout() {
@@ -12,7 +12,7 @@ export default function Mg1Layout() {
           className="object-cover absolute inset-0 size-full"
           alt="Background"
         />
-        <Mg1Nav />
+        <NavigationBar />
         <Mg1Content />
       </main>
     </div>

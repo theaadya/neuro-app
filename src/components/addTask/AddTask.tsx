@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Navigation } from "./Navigation";
+import { NavigationBar } from "../NavigationBar";
 import { Calendar } from "./Calendar";
 import { TimePicker } from "./TimePicker";
 import { Button } from "./Button";
@@ -10,7 +10,7 @@ export const AddTask = () => {
   return (
     <main className="overflow-hidden bg-black">
       <section className="flex flex-col pt-8 pr-20 pb-16 pl-1 w-full bg-white rounded-xl border border-black border-solid max-md:pr-5 max-md:max-w-full">
-        <Navigation />
+        <NavigationBar />
 
         <div className="self-end mt-24 w-full max-w-[1224px] max-md:mt-10 max-md:max-w-full">
           <div className="flex gap-5 max-md:flex-col">
