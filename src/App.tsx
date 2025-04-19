@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import CameraCapture from "./components/CameraCapture";
 import SignUpPage from "./components/SignUpPage";
 import TaskManagement from "./components/TaskManagement";
@@ -25,12 +25,24 @@ import SetPriorityLevel from "./components/SetPriority/SetPriorityLevel";
 import ProductivityDashboard from "./components/Insight/ProductivityDashboard";
 import TaskManage1 from "./components/Task1/TaskMange1";
 import Desktop30 from "./components/desktop30/Desktop30";
+import Chatbot from "./components/chatbot/Chatbot";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<TaskManagement />} />
+        <Route path="/" element={<Navigate to="/home" replace />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route
+          path="/home"
+          element={
+            <ProtectedRoute>
+              <HomePage />
+            </ProtectedRoute>
+          }
+        />
+        <Route path="/taskmanage" element={<TaskManagement />} />
         <Route path="/checklist" element={<TaskCheckList />} />
         <Route path="/camera" element={<CameraCapture />} />
         <Route path="/signup" element={<SignUpPage />} />
@@ -55,8 +67,7 @@ function App() {
         <Route path = "/insight" element={<ProductivityDashboard />}/>
         <Route path="/task-1" element={<TaskManage1 />} />
         <Route path="/desktop30" element={<Desktop30 />} />
-        
-        
+        <Route path="/chatbot" element={<Chatbot />} />
       </Routes>
     </Router>
   );
