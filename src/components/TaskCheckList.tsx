@@ -30,7 +30,7 @@ export const TaskCheckList: React.FC = () => {
           <div className="mt-4 mr-6 ml-4 max-md:mr-2.5 max-md:max-w-full">
             <div className="flex gap-4 max-md:flex-col">
               <div className="w-[46%] max-md:w-full">
-                <TaskList taskDescription={taskDescription} />
+                <TaskList taskDescription={taskDescription} /> {/* Pass taskDescription as a prop */}
               </div>
               <div className="ml-3 w-[54%] max-md:w-full">
                 <ChatWithNURO />
