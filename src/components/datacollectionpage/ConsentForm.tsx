@@ -39,7 +39,7 @@ export const ConsentForm: React.FC<ConsentFormProps> = ({ onConsent }) => {
         </Button>
         <Button
           onClick={() => onConsent?.(false)}
-          variant="image"
+          variant="primary"
           className="mt-14 max-md:mt-10"
           fullWidth
         >
