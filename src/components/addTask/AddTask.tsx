@@ -5,8 +5,15 @@ import { NavigationBar } from "../NavigationBar";
 import { Calendar } from "./Calendar";
 import { TimePicker } from "./TimePicker";
 import { Button } from "./Button";
+import { useNavigate } from "react-router-dom";
+
 
 export const AddTask = () => {
+  const navigate = useNavigate();
+
+  const handleDoneClick = () => {
+    navigate("/task-1"); // ✅ Navigates to task-1 route
+  };
   return (
     <main className="overflow-hidden bg-black">
       <section className="flex flex-col pt-8 pr-20 pb-16 pl-1 w-full bg-white rounded-xl border border-black border-solid max-md:pr-5 max-md:max-w-full">
@@ -49,6 +56,7 @@ export const AddTask = () => {
                 <Button
                   variant="secondary"
                   className="self-end mt-12 max-md:mt-10"
+                  onClick={handleDoneClick}
                 >
                   Done
                 </Button>

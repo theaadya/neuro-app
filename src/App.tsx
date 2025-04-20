@@ -28,6 +28,8 @@ import Desktop30 from "./components/desktop30/Desktop30";
 import Chatbot from "./components/chatbot/Chatbot";
 import ProtectedRoute from "./components/ProtectedRoute";
 import TaskAnalysis from "./components/TaskAnalysis";
+import TaskList from "./components/Task1/TaskList";
+import TaskManage from "./components/TaskManage";
 
 function App() {
   return (
