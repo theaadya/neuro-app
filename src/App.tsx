@@ -30,6 +30,8 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import TaskAnalysis from "./components/TaskAnalysis";
 import HumeChat from "./components/HumeEVI";
 import { Hume } from "hume";
+import TaskList from "./components/Task1/TaskList";
+import TaskManage from "./components/TaskManage";
 
 function App() {
   return (
