@@ -1,8 +1,8 @@
 "use client";
 import * as React from "react";
-import {NavigationBar} from "./NavigationBar";
+import { NavigationBar } from "./NavigationBar";
 import NotificationCard from "./NotificationCard";
-import {ActionButton} from "./ActionButton";
+import { ActionButton } from "./ActionButton";
 import AiCompanionFooter from "./AiCompanionFooter";
 import { useNavigate } from "react-router-dom";
 
@@ -10,70 +10,56 @@ function HomePage() {
   const navigate = useNavigate();
 
   return (
-    <main className="overflow-hidden bg-black">
-      <section className="flex flex-col items-start pt-8 pb-16 w-full bg-white rounded-xl border border-black border-solid max-md:max-w-full">
-        <NavigationBar />
+    <main>
+      <section className="flex flex-col items-start w-full h-screen bg-white">
+        {/* Navigation Bar */}
+        <div className="w-full">
+          <NavigationBar />
+        </div>
 
-        <div className="z-10 mt-16 w-full max-w-[1411px] max-md:mt-10 max-md:max-w-full">
-          <div className="flex gap-5 max-md:flex-col">
-            {/* Left column with image */}
-            <div className="w-[55%] max-md:ml-0 max-md:w-full">
-              <img
-                src="https://cdn.builder.io/api/v1/image/assets/TEMP/0ba5844e354717712e1f3be8c1003265ac907b58?placeholderIfAbsent=true&apiKey=9163cbaba4b9452eaa4e875c4a3cc94d"
-                alt="Dashboard visualization"
-                className="object-contain grow mt-4 w-full aspect-[1.16] max-md:mt-6 max-md:max-w-full"
+        {/* Content Area */}
+        <div className="flex flex-1 w-full px-6 pb-4 pt-4 max-md:flex-col max-md:px-4">
+          {/* Left Column with Image */}
+          <div className="w-1/2 flex items-center justify-center max-md:w-full max-md:mb-4">
+            <img
+              src="https://cdn.builder.io/api/v1/image/assets/TEMP/0ba5844e354717712e1f3be8c1003265ac907b58?placeholderIfAbsent=true&apiKey=9163cbaba4b9452eaa4e875c4a3cc94d"
+              alt="Dashboard visualization"
+              className="object-contain max-h-[80%] w-full"
+            />
+          </div>
+
+          {/* Right Column */}
+          <div className="w-1/2 flex flex-col justify-center space-y-4 max-md:w-full max-md:space-y-3">
+            {/* Notification Cards */}
+            <div className="flex gap-3">
+              <NotificationCard
+                type="upcoming"
+                text="your upcoming meeting in 2 minutes"
+              />
+              <NotificationCard
+                type="capacity"
+                text="CAPACITY INDICATOR"
+                value="90%"
               />
             </div>
 
-            {/* Right column with notifications and actions */}
-            <div className="ml-5 w-[45%] max-md:ml-0 max-md:w-full">
-              <div className="w-full max-md:mt-2.5 max-md:max-w-full">
-                {/* Notification cards */}
-                <div className="w-full max-md:max-w-full">
-                  <div className="flex gap-5 max-md:flex-col">
-                    <div className="w-[38%] max-md:ml-0 max-md:w-full">
-                      <NotificationCard
-                        type="upcoming"
-                        text="your upcoming meeting in 2 minutes"
-                      />
-                    </div>
-                    <div className="ml-5 w-[62%] max-md:ml-0 max-md:w-full">
-                      <NotificationCard
-                        type="capacity"
-                        text="CAPACITY INDICATOR"
-                        value="90%"
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                {/* Action buttons */}
-                <ActionButton
-                  onClick={() => navigate("/task-1")} 
-                  className="mt-24 max-md:mt-10"
-                > Manage your tasks
-                </ActionButton>
-                <ActionButton
-                  onClick={() => navigate("/Dashboard")} 
-                  className="mt-8" >
-                  Manage your meetings
-                </ActionButton>
-                <ActionButton
-                  onClick={() => navigate("/insight")}
-                  className="mt-6"
-                >
-                  Get your productivity trends
-                </ActionButton>
-                <ActionButton 
-                onClick={() => navigate("/desktop30")}
-                className="mt-6">
-                Be a part of Community
-                </ActionButton>
-              </div>
-            </div>
+            {/* Action Buttons */}
+            <ActionButton onClick={() => navigate("/task-1")}>
+              Manage your tasks
+            </ActionButton>
+            <ActionButton onClick={() => navigate("/manage")}>
+              Manage your meetings
+            </ActionButton>
+            <ActionButton onClick={() => navigate("/insight")}>
+              Get your productivity trends
+            </ActionButton>
+            <ActionButton onClick={() => navigate("/desktop30")}>
+              Be a part of Community
+            </ActionButton>
           </div>
         </div>
 
+        {/* Footer */}
         <AiCompanionFooter />
       </section>
     </main>
