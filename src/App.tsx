@@ -27,6 +27,7 @@ import TaskManage1 from "./components/Task1/TaskMange1";
 import Desktop30 from "./components/desktop30/Desktop30";
 import Chatbot from "./components/chatbot/Chatbot";
 import ProtectedRoute from "./components/ProtectedRoute";
+import TaskAnalysis from "./components/TaskAnalysis";
 
 function App() {
   return (
@@ -68,6 +69,7 @@ function App() {
         <Route path="/task-1" element={<TaskManage1 />} />
         <Route path="/desktop30" element={<Desktop30 />} />
         <Route path="/chatbot" element={<Chatbot />} />
+        <Route path="/analysis" element={<TaskAnalysis />} />
       </Routes>
     </Router>
   );

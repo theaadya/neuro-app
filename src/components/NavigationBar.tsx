@@ -30,12 +30,12 @@ export const NavigationBar: React.FC = () => {
       {/* Centered Navigation Items */}
       <div className="flex items-center gap-6 bg-rose-300 bg-opacity-50 px-8 py-2 rounded-full shadow-md max-md:px-4 max-md:flex-wrap">
         <NavLink
-          to="/about"
+          to="/home"
           className={({ isActive }) =>
             `${linkBase} ${isActive ? activeStyle : ""}`
           }
         >
-          About
+          Home
         </NavLink>
 
         <NavLink
