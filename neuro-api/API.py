@@ -261,7 +261,7 @@ def get_model_output(face_emotions, voice_emotions):
     task_tensor  = torch.tensor([0.9], dtype=torch.float32)
     face_idxs_tensor  = torch.tensor(face_emotion_idxs, dtype=torch.long)
     voice_idxs_tensor  = torch.tensor(voice_emotion_idxs, dtype=torch.long)
-        
+
     out = loaded_model(
         facial_tensor.unsqueeze(0), 
         voice_tensor.unsqueeze(0), 
@@ -273,6 +273,32 @@ def get_model_output(face_emotions, voice_emotions):
     print(out.squeeze(0))
     print(label)
 
+
+@app.route('/chat', methods=['POST'])
+@cross_origin()
+def chat_with_model():
+    """Receive user message and return AI-generated response using Phi-3.5."""
+    data = request.get_json()
+
+    if not data or "message" not in data:
+        return jsonify({"error": "No message provided"}), 400
+
+    user_message = data["message"]
+
+    try:
+        completion = hf_client.chat.completions.create(
+            model="microsoft/Phi-3.5-mini-instruct",
+            messages=[
+                {"role": "user", "content": user_message}
+            ],
+            max_tokens=500,
+        )
+
+        response_text = completion.choices[0].message['content']
+        return jsonify({"response": response_text}), 200
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 if __name__ == '__main__':
     app.run(debug=True)

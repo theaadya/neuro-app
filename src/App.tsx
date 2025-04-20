@@ -28,6 +28,8 @@ import Desktop30 from "./components/desktop30/Desktop30";
 import Chatbot from "./components/chatbot/Chatbot";
 import ProtectedRoute from "./components/ProtectedRoute";
 import TaskAnalysis from "./components/TaskAnalysis";
+import HumeChat from "./components/HumeEVI";
+import { Hume } from "hume";
 
 function App() {
   return (
@@ -70,6 +72,7 @@ function App() {
         <Route path="/desktop30" element={<Desktop30 />} />
         <Route path="/chatbot" element={<Chatbot />} />
         <Route path="/analysis" element={<TaskAnalysis />} />
+        <Route path="/humechat" element={<HumeChat />} />
       </Routes>
     </Router>
   );
