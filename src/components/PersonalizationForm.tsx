@@ -1,16 +1,24 @@
 "use client";
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { LogoIcon } from "./LogoIcon";
 import { OptionButton } from "./OptionButton";
 import { NavigationButton } from "./NavigationButton";
 
 export const PersonalizationForm: React.FC = () => {
+  const navigate = useNavigate();
+
   const handleOptionClick = (option: string) => {
     console.log("Selected option:", option);
   };
 
   const handleNavigation = (action: "next" | "skip") => {
     console.log("Navigation action:", action);
+    if (action === "next") {
+      navigate("/CommunitySettingsPage"); 
+    } else {
+      navigate("/CommunitySettingsPage"); 
+    }
   };
 
   return (
@@ -51,9 +59,9 @@ export const PersonalizationForm: React.FC = () => {
           />
         </div>
 
-
         <nav className="flex gap-5 max-sm:flex-col max-sm:w-full">
-          <NavigationButton onClick={() => handleNavigation("next")}>
+          <NavigationButton 
+            onClick={() => handleNavigation("next")}>
             Next
           </NavigationButton>
 
