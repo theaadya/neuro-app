@@ -9,11 +9,11 @@ import { useEffect } from "react";
 function LoginPage() {
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (isAuthenticated()) {
-      navigate("/home");
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (isAuthenticated()) {
+  //     navigate("/home");
+  //   }
+  // }, []);
 
   const handleLogin = () => {
     login();

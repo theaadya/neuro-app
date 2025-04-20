@@ -40,14 +40,14 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<Navigate to="/home" replace />} />
-        <Route path="/login" element={<LoginPage />} />
+        <Route path="/" element={<LoginPage />} />
         <Route
           path="/home"
-          element={
-            <ProtectedRoute>
-              <HomePage />
-            </ProtectedRoute>
-          }
+          // element={
+          //   <ProtectedRoute>
+          //     <HomePage />
+          //   </ProtectedRoute>
+          // }
         />
         <Route path="/taskmanage" element={<TaskManagement />} />
         <Route path="/checklist" element={<TaskCheckList />} />
