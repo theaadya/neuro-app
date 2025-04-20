@@ -1,24 +1,26 @@
 "use client";
 
 import * as React from "react";
+import { useNavigate } from "react-router-dom";
 import { ConsentForm } from "./ConsentForm";
 import { Navigation } from "./Navigation";
 
+export default function DataPrivacyConsent() {
+  const navigate = useNavigate();
 
-export const DataPrivacyConsent: React.FC = () => {
   const handleConsent = (consent: boolean) => {
     console.log("Consent:", consent);
-    // Handle consent logic here
+    // Additional consent handling logic here
   };
 
   const handleNext = () => {
     console.log("Next clicked");
-    // Handle navigation logic here
+    navigate("/DataPrivacyConsent"); // <-- replace with your target route
   };
 
   const handleSkip = () => {
     console.log("Skip clicked");
-    // Handle skip logic here
+    navigate("/DataPrivacyConsent"); // <-- replace with your target route
   };
 
   return (
@@ -41,6 +43,4 @@ export const DataPrivacyConsent: React.FC = () => {
       </div>
     </main>
   );
-};
-
-export default DataPrivacyConsent;
+}
