@@ -1,11 +1,22 @@
 import * as React from "react";
 import { ReactNode } from "react";
+import { NavigationButtons } from "./NavigationButtons"; // Import NavigationButtons
 
 interface PersonalizationCardProps {
-  children: ReactNode;
+  children?: ReactNode;
 }
 
 export function PersonalizationCard({ children }: PersonalizationCardProps) {
+  const handleNext = () => {
+    console.log("Next button clicked");
+    // Add navigation or logic for the Next button here
+  };
+
+  const handleSkip = () => {
+    console.log("Skip button clicked");
+    // Add navigation or logic for the Skip button here
+  };
+
   return (
     <section className="flex relative flex-col self-center px-20 pt-9 pb-5 mt-32 mb-0 w-full bg-red-400 max-w-[1006px] rounded-[30px] max-md:px-5 max-md:mt-10 max-md:mb-2.5 max-md:max-w-full">
       <h1 className="py-4 pr-16 pl-24 text-5xl text-black bg-rose-300 rounded-[100px] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] max-md:px-5 max-md:mr-2.5 max-md:max-w-full max-md:text-4xl">
@@ -19,6 +30,7 @@ export function PersonalizationCard({ children }: PersonalizationCardProps) {
         insights—making the app truly work for you.
       </p>
       {children}
+      <NavigationButtons onNext={handleNext} onSkip={handleSkip} /> {/* Add NavigationButtons */}
     </section>
   );
 }
