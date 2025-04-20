@@ -32,7 +32,7 @@ import HumeChat from "./components/HumeEVI";
 import { PersonalizationCard } from "./components/PersonalizationCard";
 
 import { Hume } from "hume";
-import { PersonalizationCard } from "./components/PersonalizationCard";
+
 
 
 function App() {

@@ -2,6 +2,7 @@ import * as React from "react";
 import { ReactNode } from "react";
 
 import { useNavigate } from "react-router-dom"; // Import useNavigate
+import { NavigationButtons } from "./NavigationButtons"; // Import NavigationButtons
 
 
 interface PersonalizationCardProps {
