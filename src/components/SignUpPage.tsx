@@ -9,13 +9,13 @@ export default function SignUpPage() {
 
   useEffect(() => {
     if (isAuthenticated()) {
-      navigate("/home");
+      navigate("/personalizationCard"); // Redirect to PersonalizationCard if already authenticated
     }
   }, []);
 
   const handleSignup = () => {
-    login();
-    navigate("/home");
+    login(); // Simulate login logic
+    navigate("/personalizationCard"); // Navigate to PersonalizationCard after signing up
   };
 
   return (
@@ -33,14 +33,20 @@ export default function SignUpPage() {
             className="object-contain z-10 max-w-full aspect-square shadow-[0px_4px_4px_rgba(0,0,0,0.25)] w-[277px]"
           />
           <SignUpForm />
-          <button 
+          <button
             className="px-16 py-4 mt-8 max-w-full text-white whitespace-nowrap bg-red-400 rounded-[100px] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] w-[241px] max-md:px-5"
             onClick={handleSignup}
           >
             SignUp
           </button>
           <p className="mt-7 text-xl text-black">
-            Already a user? <button className="underline">Login</button>
+            Already a user?{" "}
+            <button
+              className="underline"
+              onClick={() => navigate("/login")} // Navigate to login page
+            >
+              Login
+            </button>
           </p>
         </div>
       </div>
