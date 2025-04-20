@@ -29,6 +29,8 @@ import Chatbot from "./components/chatbot/Chatbot";
 import ProtectedRoute from "./components/ProtectedRoute";
 import TaskAnalysis from "./components/TaskAnalysis";
 import HumeChat from "./components/HumeEVI";
+import { PersonalizationCard } from "./components/PersonalizationCard";
+
 import { Hume } from "hume";
 import { PersonalizationCard } from "./components/PersonalizationCard";
 
@@ -37,16 +39,17 @@ function App() {
   return (
     <Router>
       <Routes>
-        {/* <Route path="/" element={<Navigate to="/home" replace />} /> */}
+
+        <Route path="/" element={<Navigate to="/home" replace />} />
         <Route path="/" element={<LoginPage />} />
-        <Route path="/login" element={<LoginPage />} />
         <Route
           path="/home"
-          element={
-            // <ProtectedRoute>
-              <HomePage />
-            // </ProtectedRoute>
-          }
+          // element={
+          //   <ProtectedRoute>
+          //     <HomePage />
+          //   </ProtectedRoute>
+          // }
+
         />
         <Route path="/taskmanage" element={<TaskManagement />} />
         <Route path="/checklist" element={<TaskCheckList />} />
@@ -76,8 +79,9 @@ function App() {
         <Route path="/chatbot" element={<Chatbot />} />
         <Route path="/analysis" element={<TaskAnalysis />} />
         <Route path="/humechat" element={<HumeChat />} />
-        <Route path="/personalizationCard"element={<PersonalizationCard>
-              <p>Welcome to the personalization page!</p> </PersonalizationCard>}/>
+
+        <Route path ="/personalizationcard" element={<PersonalizationCard />} />
+
       </Routes>
     </Router>
   );

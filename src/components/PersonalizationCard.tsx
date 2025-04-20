@@ -1,20 +1,28 @@
 import * as React from "react";
 import { ReactNode } from "react";
-import { NavigationButtons } from "./NavigationButtons"; // Import NavigationButtons
+
+import { useNavigate } from "react-router-dom"; // Import useNavigate
+
 
 interface PersonalizationCardProps {
   children?: ReactNode;
 }
 
 export function PersonalizationCard({ children }: PersonalizationCardProps) {
+
+  const navigate = useNavigate(); // Initialize useNavigate
+
   const handleNext = () => {
     console.log("Next button clicked");
-    // Add navigation or logic for the Next button here
+    navigate("/CognitivePreferencesQuestion"); // Navigate to CognitivePreferencesQuestion
+
   };
 
   const handleSkip = () => {
     console.log("Skip button clicked");
-    // Add navigation or logic for the Skip button here
+
+    navigate("/home"); // Navigate to the home screen
+
   };
 
   return (
