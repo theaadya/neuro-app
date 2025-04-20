@@ -1,7 +1,11 @@
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
 
-export const TaskCard: React.FC = () => {
+interface TaskCardProps {
+  onDescriptionChange: (description: string) => void; // Callback function to send the description to the parent
+}
+
+export const TaskCard: React.FC<TaskCardProps> = ({ onDescriptionChange }) => {
   const navigate = useNavigate();
   const [isEditing, setIsEditing] = React.useState(false);
   const [taskDescription, setTaskDescription] = React.useState(
@@ -18,6 +22,7 @@ export const TaskCard: React.FC = () => {
 
   const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setTaskDescription(event.target.value);
+    onDescriptionChange(event.target.value); // Send updated description to the parent
   };
 
   return (
@@ -25,7 +30,7 @@ export const TaskCard: React.FC = () => {
       <div className="flex gap-3 justify-between w-full max-md:max-w-full">
         <h2 className="self-start">TASK - 1</h2>
         <button
-          onClick={() => navigate("/camera")} // Navigates to CameraCapture
+          onClick={() => navigate("/camera")}
           className="flex gap-4 px-4 py-1.5 text-sm whitespace-nowrap bg-stone-400 rounded-[40px] shadow-[0px_2px_2px_rgba(0,0,0,0.2)] max-md:pl-3"
         >
           <span>START</span>
@@ -36,7 +41,6 @@ export const TaskCard: React.FC = () => {
           />
         </button>
       </div>
-      {/* Task Description Box */}
       <div
         className="flex items-center justify-center shrink-0 mt-6 max-w-full bg-white bg-opacity-10 h-[200px] rounded-[16px] w-[460px] max-md:mt-5 p-4 cursor-pointer"
         onClick={handleEditClick}

@@ -4,8 +4,11 @@ import { NavigationBar } from "./NavigationBar";
 import { TaskList } from "./TaskList";
 import { CapacityIndicator } from "./CapacityIndicator";
 import { ChatWithNURO } from "./ChatWithNURO";
+import { useLocation } from "react-router-dom";
 
 export const TaskCheckList: React.FC = () => {
+  const location = useLocation();
+  const taskDescription = location.state?.taskDescription || "No description provided";
   return (
     <main className="overflow-hidden bg-black">
       <div className="flex relative flex-col items-end pt-2 pr-11 pb-16 pl-1 w-full rounded-none min-h-[1024px] max-md:pr-5 max-md:max-w-full">
@@ -27,7 +30,7 @@ export const TaskCheckList: React.FC = () => {
           <div className="mt-4 mr-6 ml-4 max-md:mr-2.5 max-md:max-w-full">
             <div className="flex gap-4 max-md:flex-col">
               <div className="w-[46%] max-md:w-full">
-                <TaskList />
+                <TaskList taskDescription={taskDescription} />
               </div>
               <div className="ml-3 w-[54%] max-md:w-full">
                 <ChatWithNURO />

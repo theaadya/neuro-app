@@ -1,6 +1,10 @@
 import * as React from "react";
 
-export const TaskList: React.FC = () => {
+interface TaskListProps {
+  taskDescription: string;
+}
+
+export const TaskList: React.FC<TaskListProps> = ({ taskDescription }) => {
   return (
     <article className="pt-4 pr-4 pb-6 pl-8 mx-auto w-full text-lg text-white bg-red-400 rounded-[16px] max-md:px-3 max-md:mt-5 max-md:max-w-full">
       <div className="flex gap-3 justify-between w-full max-md:max-w-full">

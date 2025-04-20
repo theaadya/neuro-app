@@ -2,14 +2,21 @@ import * as React from "react";
 import { ActionButton } from "./ActionButton";
 import { useNavigate } from "react-router-dom";
 
-export const TaskBreakdown: React.FC = () => {
+interface TaskBreakdownProps {
+  taskDescription: string;
+}
+
+export const TaskBreakdown: React.FC<TaskBreakdownProps> = ({ taskDescription }) => {
   const navigate = useNavigate();
+  const handleCreateChecklist = () => {
+    navigate("/checklist", { state: { taskDescription } });
+  };
   return (
     <section className="flex flex-col mt-12 w-full text-xl max-md:mt-8 max-md:max-w-full">
       <div className="flex flex-col self-end max-w-full text-black w-[400px]">
         <h2 className="self-center">BREAKDOWN YOUR TASK</h2>
         <ActionButton 
-          onClick={() => navigate("/checklist")}
+          onClick={handleCreateChecklist}
           className="mt-5 max-md:max-w-full">
           Create Checklist
         </ActionButton>
