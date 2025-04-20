@@ -32,15 +32,14 @@ import HumeChat from "./components/HumeEVI";
 import { PersonalizationCard } from "./components/PersonalizationCard";
 
 
-
 function App() {
   return (
     <Router>
       <Routes>
-
-        <Route path="/" element={<Navigate to="/home" replace />} />
+        {/* <Route path="/" element={<Navigate to="/home" replace />} /> */}
         <Route path="/" element={<LoginPage />} />
-        <Route
+        <Route path="/login" element={<LoginPage />} />
+        {/* <Route
           path="/home"
           // element={
           //   <ProtectedRoute>
@@ -48,7 +47,7 @@ function App() {
           //   </ProtectedRoute>
           // }
 
-        />
+        /> */}
         <Route path="/taskmanage" element={<TaskManagement />} />
         <Route path="/checklist" element={<TaskCheckList />} />
         <Route path="/camera" element={<CameraCapture />} />
