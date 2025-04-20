@@ -29,6 +29,8 @@ import Chatbot from "./components/chatbot/Chatbot";
 import ProtectedRoute from "./components/ProtectedRoute";
 import TaskAnalysis from "./components/TaskAnalysis";
 import HumeChat from "./components/HumeEVI";
+import { PersonalizationCard } from "./components/PersonalizationCard";
+
 import { Hume } from "hume";
 import TaskList from "./components/Task1/TaskList";
 import TaskManage from "./components/TaskManage";
@@ -75,6 +77,7 @@ function App() {
         <Route path="/chatbot" element={<Chatbot />} />
         <Route path="/analysis" element={<TaskAnalysis />} />
         <Route path="/humechat" element={<HumeChat />} />
+        <Route path ="/personalizationcard" element={<PersonalizationCard />} />
       </Routes>
     </Router>
   );
