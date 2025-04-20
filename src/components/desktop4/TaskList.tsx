@@ -1,12 +1,17 @@
 import React from "react";
 import { TaskItem } from "./TaskItem";
+import { useNavigate } from "react-router-dom";
 
 export const TaskList = () => {
+  const navigate = useNavigate();
+
   return (
     <section className="flex flex-col pt-3 pr-4 pb-11 pl-12 mx-auto w-full text-2xl bg-red-400 rounded-[30px] max-md:pl-5 max-md:mt-9 max-md:max-w-full">
       <div className="flex flex-wrap gap-5 justify-between text-white max-md:max-w-full">
         <h2 className="self-start mt-5">View Tasks</h2>
-        <button className="px-16 pt-3 pb-6 bg-stone-400 rounded-[80px] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] max-md:px-5">
+        <button 
+          onClick={() => navigate("/addtask")}
+          className="px-16 pt-3 pb-6 bg-stone-400 rounded-[80px] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] max-md:px-5">
           ADD TASK
         </button>
       </div>

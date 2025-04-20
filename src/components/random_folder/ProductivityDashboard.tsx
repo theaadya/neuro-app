@@ -1,6 +1,6 @@
 "use client";
 import * as React from "react";
-import { Header } from "./Header";
+import { NavigationBar } from "../NavigationBar";
 import { ProductivityTrends } from "./ProductivityTrends";
 import { ChatButton } from "./ChatButton";
 
@@ -12,7 +12,7 @@ const ProductivityDashboard: React.FC = () => {
         rel="stylesheet"
       />
       <div className="relative w-full min-h-screen">
-        <Header />
+        <NavigationBar />
         <ProductivityTrends />
         <ChatButton />
       </div>

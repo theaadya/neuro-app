@@ -3,8 +3,10 @@ import * as React from "react";
 import { Logo } from "./Logo";
 import { PersonalizationCard } from "./PersonalizationCard";
 import { ActionButtons } from "./ActionButtons";
+import { useNavigate } from "react-router-dom";
 
 export default function PersonalizationPage() {
+  const navigate = useNavigate();
   const handleYesClick = () => {
     // Handle Yes button click
     console.log("Yes clicked");
@@ -26,8 +28,8 @@ export default function PersonalizationPage() {
         <Logo />
         <PersonalizationCard>
           <ActionButtons
-            onYesClick={handleYesClick}
-            onSkipClick={handleSkipClick}
+            onYesClick={() => navigate("/CognitivePreferencesquestion")}
+            onSkipClick={() => navigate("/home")}
           />
         </PersonalizationCard>
       </div>

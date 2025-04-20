@@ -1,11 +1,18 @@
 "use client";
-import * as React from "react";
+import React, { useState } from "react";
 import { NavigationBar } from "./NavigationBar";
 import { TaskCard } from "./TaskCard";
 import { TaskBreakdown } from "./TaskBreakdown";
 import { CapacityIndicator } from "./CapacityIndicator";
 
 export const TaskManagement: React.FC = () => {
+  const [taskDescription, setTaskDescription] = useState<string>("");
+
+  const handleDescriptionChange = (description: string) => {
+    setTaskDescription(description); // Update the task description state
+    console.log("Updated Task Description:", description); // You can also perform other actions here
+  };
+
   return (
     <main className="overflow-hidden bg-black h-screen">
       <div className="flex relative flex-col items-end pt-2 pr-11 pb-16 pl-1 w-full rounded-none min-h-[1024px] max-md:pr-5 max-md:max-w-full">
@@ -17,23 +24,21 @@ export const TaskManagement: React.FC = () => {
         <div className="relative w-full">
           <NavigationBar />
         </div>
-        {/* Moved Task Management title up */}
         <div className="relative w-full max-w-[1274px] max-md:mr-0.5 max-md:max-w-full">
-        <header className="flex flex-wrap gap-5 justify-between w-full mt-3 max-md:max-w-full">
-          <h1 className="text-4xl text-black pt-6 pl-6 max-md:max-w-full max-md:text-3xl">
-            TASK MANAGEMENT
-          </h1>
-          <CapacityIndicator value="90%" />
-        </header>
-          {/* Reduced margin-top to move Task Breakdown up */}
+          <header className="flex flex-wrap gap-5 justify-between w-full mt-3 max-md:max-w-full">
+            <h1 className="text-4xl text-black pt-6 pl-6 max-md:max-w-full max-md:text-3xl">
+              TASK MANAGEMENT
+            </h1>
+            <CapacityIndicator value="90%" />
+          </header>
           <div className="mt-4 mr-6 ml-4 max-md:mr-2.5 max-md:max-w-full">
             <div className="flex gap-4 max-md:flex-col">
               <div className="w-[46%] max-md:w-full">
-                <TaskCard />
+                <TaskCard onDescriptionChange={handleDescriptionChange} />
               </div>
-              {/* Reduced left margin to pull TaskBreakdown closer */}
               <div className="ml-3 w-[54%] max-md:w-full">
-                <TaskBreakdown />
+                {/* Pass taskDescription as a prop */}
+                <TaskBreakdown taskDescription={taskDescription} />
               </div>
             </div>
           </div>

@@ -1,46 +1,86 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import TopExpressions from "./TopExpressions";
 import ExpressionLevels from "./ExpressionLevels";
-import EmotionSummaryPlot from "./EmotionSummaryPlot";
-import EmotionTrendPlot from "./EmotionTrendPlot";
-import QualitativeAnalysis from "./QualitativeAnalysis ";
+import { useNavigate } from "react-router-dom";
 
 const CameraCapture: React.FC = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [isSessionActive, setIsSessionActive] = useState(false);
   const [emotions, setEmotions] = useState<any[]>([]);
+  const [voiceEmotions, setVoiceEmotions] = useState<any[]>([]);
   const [sessionSummary, setSessionSummary] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [imageCount, setImageCount] = useState(0);
-  const captureIntervalRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Audio-related refs
+  const audioStreamRef = useRef<MediaStream | null>(null);
+  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+  const audioContextRef = useRef<AudioContext | null>(null);
+  const analyserRef = useRef<AnalyserNode | null>(null);
+  const dataArrayRef = useRef<Uint8Array | null>(null);
+  const detectionFrameRef = useRef<number>(0);
 
   const startSession = async () => {
     setIsSessionActive(true);
     setImageCount(0);
     setSessionSummary(null);
     setEmotions([]);
+    setVoiceEmotions([]);
 
-    const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+    // Start video
+    const videoStream = await navigator.mediaDevices.getUserMedia({ video: true });
     if (videoRef.current) {
-      videoRef.current.srcObject = stream;
+      videoRef.current.srcObject = videoStream;
     }
 
-    if (captureIntervalRef.current) {
-      clearInterval(captureIntervalRef.current);
-    }
+    // Start audio
+    const audioStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    audioStreamRef.current = audioStream;
+    // Setup MediaRecorder
+    const mediaRecorder = new MediaRecorder(audioStream);
+    mediaRecorderRef.current = mediaRecorder;
+    mediaRecorder.ondataavailable = (e: BlobEvent) => {
+      if (e.data.size > 0) {
+        sendAudioToAPI(e.data);
+      }
+    };
+    // Setup AudioContext for noise detection
+    const audioContext = new AudioContext();
+    audioContextRef.current = audioContext;
+    const source = audioContext.createMediaStreamSource(audioStream);
+    const analyser = audioContext.createAnalyser();
+    analyser.fftSize = 2048;
+    analyserRef.current = analyser;
+    source.connect(analyser);
+    const bufferLength = analyser.fftSize;
+    dataArrayRef.current = new Uint8Array(bufferLength);
 
+    // Kick off noise detection loop
+    detectNoise();
+
+    // Initialize image capture interval
     captureIntervalRef.current = setInterval(captureImage, 5000);
   };
 
   const stopSession = async () => {
     setIsSessionActive(false);
 
+    // Stop video
     if (videoRef.current && videoRef.current.srcObject) {
       const stream = videoRef.current.srcObject as MediaStream;
       stream.getTracks().forEach(track => track.stop());
     }
 
+    // Stop audio stream
+    if (audioStreamRef.current) {
+      audioStreamRef.current.getTracks().forEach(track => track.stop());
+    }
+
+    // Cancel noise detection
+    cancelAnimationFrame(detectionFrameRef.current);
+
+    // Clear capture interval
     if (captureIntervalRef.current) {
       clearInterval(captureIntervalRef.current);
       captureIntervalRef.current = null;
@@ -49,68 +89,97 @@ const CameraCapture: React.FC = () => {
     await fetchSessionAnalysis();
   };
 
+  const captureIntervalRef = useRef<NodeJS.Timeout | null>(null);
+
   const captureImage = () => {
     if (!canvasRef.current || !videoRef.current) return;
-
     const context = canvasRef.current.getContext("2d");
     if (context) {
       context.drawImage(videoRef.current, 0, 0, canvasRef.current.width, canvasRef.current.height);
       canvasRef.current.toBlob((blob) => {
         if (blob) {
           setIsLoading(true);
-          setImageCount(prevCount => prevCount + 1);
-          sendToAPI(blob);
+          setImageCount(prev => prev + 1);
+          sendImageToAPI(blob);
         }
       }, "image/jpeg");
     }
   };
 
-  const sendToAPI = async (imageBlob: Blob) => {
+  const sendImageToAPI = async (blob: Blob) => {
     const formData = new FormData();
-    formData.append("file", imageBlob, "captured.jpg");
-
+    formData.append("file", blob, "captured.jpg");
     try {
-      console.log("📸 Sending image to API...");
+      setIsLoading(true);
       const response = await fetch("http://127.0.0.1:5000/upload", {
         method: "POST",
         body: formData,
       });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-
+      if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
       const data = await response.json();
-      console.log("✅ API Response:", data);
-
-      if (data.message) {
-        setEmotions([{ name: data.message, score: "-" }]);
-      } else {
-        setEmotions(data[0].top_5_emotions);
-      }
-    } catch (error) {
-      console.error("❌ Error sending image:", error);
+      setEmotions(data.message ? [{ name: data.message, score: "-" }] : data[0].top_5_emotions);
+    } catch (err) {
+      console.error(err);
     } finally {
       setIsLoading(false);
     }
   };
 
+  const sendAudioToAPI = async (audioBlob: Blob) => {
+    console.log("audio detected");
+    const formData = new FormData();
+    formData.append("file", audioBlob, "audio.webm");
+    try {
+      const response = await fetch("http://127.0.0.1:5000/upload_audio", {
+        method: "POST",
+        body: formData,
+      });
+      if (!response.ok) throw new Error(`Audio upload failed: ${response.status}`);
+      const data = await response.json();
+      console.log("🔊 Audio API Response:", data);
+      setVoiceEmotions(data.top_5_emotions);
+      // Optionally handle ground truth or summary in UI
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const detectNoise = () => {
+    const analyser = analyserRef.current;
+    const dataArray = dataArrayRef.current;
+    if (analyser && dataArray) {
+      analyser.getByteTimeDomainData(dataArray);
+      let sum = 0;
+      for (let i = 0; i < dataArray.length; i++) {
+        const v = dataArray[i] - 128;
+        sum += v * v;
+      }
+      const rms = Math.sqrt(sum / dataArray.length);
+      const threshold = 20; // tweak as needed
+      if (rms > threshold && mediaRecorderRef.current?.state === "inactive") {
+        // record 3 seconds
+        mediaRecorderRef.current.start();
+        setTimeout(() => {
+          if (mediaRecorderRef.current?.state === "recording") {
+            mediaRecorderRef.current.stop();
+          }
+        }, 3000);
+      }
+    }
+    detectionFrameRef.current = requestAnimationFrame(detectNoise);
+  };
+
+  const navigate = useNavigate();
+
+  // Replace fetchSessionAnalysis with this
   const fetchSessionAnalysis = async () => {
     try {
-      console.log("📊 Fetching session analysis...");
-      const response = await fetch("http://127.0.0.1:5000/end_session", {
-        method: "GET",
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-
+      const response = await fetch("http://127.0.0.1:5000/end_session");
+      if (!response.ok) throw new Error(`Status: ${response.status}`);
       const data = await response.json();
-      console.log("📈 Session Analysis:", data);
-      setSessionSummary(data);
-    } catch (error) {
-      console.error("❌ Error fetching session analysis:", error);
+      navigate("/analysis", { state: { sessionSummary: data } });
+    } catch (err) {
+      console.error(err);
     }
   };
 
@@ -130,10 +199,10 @@ const CameraCapture: React.FC = () => {
           </button>
         </div>
       )}
-  
+
       <div className="flex flex-row items-start gap-6 mt-10">
         <div className="flex flex-col items-center">
-          {isSessionActive ? (
+          {isSessionActive && (
             <>
               <video ref={videoRef} autoPlay className="w-full max-w-md rounded-lg" />
               <button onClick={stopSession} className="px-12 py-2 mt-2 rounded-[80px] shadow-md text-2xl bg-stone-400 text-white">
@@ -141,7 +210,7 @@ const CameraCapture: React.FC = () => {
               </button>
               <p className="mt-2 text-gray-700">Images Captured: {imageCount}</p>
             </>
-          ) : null}
+          )}
           <canvas ref={canvasRef} width="640" height="480" className="hidden" />
         </div>
   
@@ -151,33 +220,9 @@ const CameraCapture: React.FC = () => {
             <ExpressionLevels expressions={emotions} />
           </div>
         )}
-  
-        {sessionSummary && (
-          <div className="mt-4 p-4 rounded">
-            <div className="absolute top-4 left-1/2 transform -translate-x-1/2 text-center">
-              <h2 className="text-lg font-bold">Session Summary</h2>
-            </div>
-            {sessionSummary.message ? (
-              <p className="text-red-600 font-semibold">{sessionSummary.message}</p>
-            ) : (
-              <>
-                <div className="absolute top-20 left-4 p-4 w-2/5 flex flex-col items-center">
-                  <EmotionSummaryPlot data={sessionSummary.top_3_emotions} />
-                  <p className="mt-2 font-semibold">Analysis: {sessionSummary.summary}</p>
-                </div>
-                <div className="absolute top-20 right-4 p-4 w-2/5 flex flex-col items-center">
-                  <EmotionTrendPlot timeEmotions={sessionSummary.final_time_emotions} />
-                </div>
-                <div className="mt-[300px] w-full px-8">
-                  <QualitativeAnalysis summary={sessionSummary.qualitative_analysis} />
-                </div>
-              </>
-            )}
-          </div>
-        )}
       </div>
     </div>
-  );  
+  );
 };
 
 export default CameraCapture;

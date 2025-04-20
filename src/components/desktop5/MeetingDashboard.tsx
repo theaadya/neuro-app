@@ -1,12 +1,12 @@
 "use client";
 import * as React from "react";
-import { NavBar } from "./NavBar";
+import { NavigationBar } from "../NavigationBar";
 import { CapacityIndicator } from "./CapacityIndicator";
 import { MeetingSection } from "./MeetingSection";
 import { ActionButtons } from "./ActionButtons";
 import { ChatSection } from "./ChatSection";
 
-export default function Dashboard() {
+export default function MeetingDashboard() {
   return (
     <main className="overflow-hidden bg-black">
       <div className="flex relative flex-col pt-1.5 pb-11 w-full rounded-none min-h-[1024px] max-md:max-w-full">
@@ -16,7 +16,7 @@ export default function Dashboard() {
           className="object-cover absolute inset-0 size-full"
         />
         <div className="relative w-full max-w-[1307px] max-md:max-w-full">
-          <NavBar />
+          <NavigationBar />
         </div>
         <section className="relative px-20 mt-16 w-full max-md:px-5 max-md:mt-10 max-md:max-w-full">
           <div className="flex flex-wrap gap-5 justify-between w-full max-md:max-w-full">

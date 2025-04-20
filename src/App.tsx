@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import CameraCapture from "./components/CameraCapture";
 import SignUpPage from "./components/SignUpPage";
 import TaskManagement from "./components/TaskManagement";
@@ -15,21 +15,39 @@ import SocialSupportSettings from './components/support5';
 import TaskManagementPreference from "./components/mg1";
 import DataPrivacyConsent from "./components/datacollectionpage/DataPrivacyConsent";
 import { DataPrivacyConsent1 } from "./components/dataprivacypage/DataPrivacyConsent";
-import Dashboard from "./components/desktop5/Dashboard";
+import MeetingDashboard from "./components/desktop5/MeetingDashboard";
 import Mg1Layout from "./components/desktop11/Mg1Layout";
 import Desktop4 from "./components/desktop4/Desktop4";
 import AddTask from "./components/addTask/AddTask";
 import HomePage from "./components/HomePage";
 import CreateMindMap from "./components/createMindMap/CreateMindMap";
 import SetPriorityLevel from "./components/SetPriority/SetPriorityLevel";
-
+import ProductivityDashboard from "./components/Insight/ProductivityDashboard";
 import TaskManage1 from "./components/Task1/TaskMange1";
+import Desktop30 from "./components/desktop30/Desktop30";
+import Chatbot from "./components/chatbot/Chatbot";
+import ProtectedRoute from "./components/ProtectedRoute";
+import TaskAnalysis from "./components/TaskAnalysis";
+import HumeChat from "./components/HumeEVI";
+import { Hume } from "hume";
+import TaskList from "./components/Task1/TaskList";
+import TaskManage from "./components/TaskManage";
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<TaskManagement />} />
+        <Route path="/" element={<Navigate to="/home" replace />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route
+          path="/home"
+          element={
+            <ProtectedRoute>
+              <HomePage />
+            </ProtectedRoute>
+          }
+        />
+        <Route path="/taskmanage" element={<TaskManagement />} />
         <Route path="/checklist" element={<TaskCheckList />} />
         <Route path="/camera" element={<CameraCapture />} />
         <Route path="/signup" element={<SignUpPage />} />
@@ -44,17 +62,19 @@ function App() {
         <Route path="/mg1" element={<TaskManagementPreference />} />
         <Route path="/DataPrivacy" element={<DataPrivacyConsent />} />
         <Route path="/DataPrivacyConsent" element={<DataPrivacyConsent1 />} />
-        <Route path="/Dashboard" element={<Dashboard />} />
+        <Route path="/manage" element={<MeetingDashboard />} />
         <Route path="/desktop11" element={<Mg1Layout />} />
         <Route path="/desktop4" element={<Desktop4 />} />
         <Route path="/addtask" element={<AddTask />} />
         <Route path="/home" element={<HomePage />} />
         <Route path="/create-mind-map" element={<CreateMindMap />} />
         <Route path="/setpriority" element={<SetPriorityLevel />} />
-
+        <Route path = "/insight" element={<ProductivityDashboard />}/>
         <Route path="/task-1" element={<TaskManage1 />} />
-        
-        
+        <Route path="/desktop30" element={<Desktop30 />} />
+        <Route path="/chatbot" element={<Chatbot />} />
+        <Route path="/analysis" element={<TaskAnalysis />} />
+        <Route path="/humechat" element={<HumeChat />} />
       </Routes>
     </Router>
   );
