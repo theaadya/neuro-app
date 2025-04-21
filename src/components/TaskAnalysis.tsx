@@ -36,7 +36,7 @@ const TaskAnalysis = () => {
           <h3 className="text-xl font-semibold w-full text-left px-8 mb-2">Facial Emotion Analysis</h3>
           <div className="flex w-full justify-between px-8">
             <div className="w-1/2 pr-4">
-              <EmotionSummaryPlot data={sessionSummary.top_5_emotions} />
+              <EmotionSummaryPlot data={sessionSummary.top_5_face_emotions} />
               <p className="mt-4 font-semibold">Analysis: {sessionSummary.summary}</p>
             </div>
             <div className="w-1/2 pl-4">

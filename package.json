@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@react-aria/visually-hidden": "^3.8.22",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.2.0",
@@ -15,6 +16,7 @@
     "hume": "^0.9.15",
     "lucide-react": "^0.501.0",
     "react": "^19.0.0",
+    "react-aria-live": "^2.0.5",
     "react-dom": "^19.0.0",
     "react-router-dom": "^7.4.0",
     "react-scripts": "5.0.1",
