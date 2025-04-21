@@ -30,7 +30,7 @@ const TaskAnalysis: React.FC = () => {
     console.log("Submitting feedback:", payload);
     // TODO: send `payload` to your feedback API endpoint via fetch/axios
     // e.g. fetch("/api/feedback", { method: "POST", body: JSON.stringify(payload) })
-    navigate("/task-1"); // or show a “thank you” message
+    navigate("/task-1", { state: { markOngoingDone: true } });
   };
 
   return (
@@ -154,7 +154,7 @@ const TaskAnalysis: React.FC = () => {
         <button
           onClick={handleSubmit}
           disabled={!helpful || !mood}
-          className="w-full bg-rose-400 text-white py-2 rounded-lg hover:bg-rose-300 disabled:opacity-50"
+          className="w-full bg-rose-400 text-white py-2 rounded-lg hover:bg-rose-400 disabled:opacity-50"
         >
           Submit Feedback
         </button>

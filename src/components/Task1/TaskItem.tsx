@@ -2,7 +2,7 @@ import React from "react";
 
 interface TaskItemProps {
   name: string;
-  status: "Ongoing" | "Done";
+  status: "Ongoing" | "Done" | "Remaining";
   className?: string;
 }
 

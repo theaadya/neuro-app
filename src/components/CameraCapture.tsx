@@ -139,6 +139,7 @@ const CameraCapture: React.FC = () => {
           setShowPopup(true);
         }        
         return updated;
+
       });
 
       // Update fatigue history
@@ -301,7 +302,7 @@ const CameraCapture: React.FC = () => {
 
             {/* Add "Why was this shown?" button */}
             <button
-              className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg"
+              className="mt-4 px-4 py-2 bg-rose-300 text-white rounded-lg"
               onClick={() => setShowExplanation(true)}
             >
               Why was this shown?

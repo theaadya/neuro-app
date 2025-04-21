@@ -5,16 +5,12 @@ import { useNavigate } from "react-router-dom";
 
 type TaskListProps = {
   taskName?: string;
+  tasks: { id: number; name: string; status: string }[];
+  setTasks: React.Dispatch<React.SetStateAction<{ id: number; name: string; status: string }[]>>;
 };
 
-const TaskList: React.FC<TaskListProps> = ({ taskName }) => {
+const TaskList: React.FC<TaskListProps> = ({ taskName, tasks, setTasks }) => {
   const navigate = useNavigate();
-
-  const [tasks, setTasks] = useState([
-    { id: 1, name: "Task - 1", status: "Ongoing" },
-    { id: 2, name: "Task - 2", status: "Remaining" },
-    { id: 3, name: "Task - 3", status: "Remaining" },
-  ]);
 
   const handleTaskClick = () => {
     navigate(`/taskmanage/`);
@@ -28,7 +24,7 @@ const TaskList: React.FC<TaskListProps> = ({ taskName }) => {
     } else {
       navigate(`/taskmanage/`);
     }
-  };  
+  };
 
   return (
     <section className="flex flex-col pt-3 pr-4 pb-11 pl-12 mx-auto w-full text-2xl bg-red-400 rounded-[30px] max-md:pl-5 max-md:mt-10 max-md:max-w-full">
