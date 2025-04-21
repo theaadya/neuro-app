@@ -9,7 +9,7 @@ import PersonalizationPage from "./components/PersonalizationPage";
 import CognitivePreferencesForm from "./components/CognitivePreferencesForm";
 import CognitivePreferencesQuestion from "./components/CognitivePreferencesQuestion";
 import TaskManagementPreferences from "./components/TaskManagementPreferences";
-import {PersonalizationForm} from "./components/PersonalizationForm";
+import { PersonalizationForm } from "./components/PersonalizationForm";
 import CommunitySettingsPage from "./components/CommunitySettingsPage";
 import SocialSupportSettings from './components/support5';
 import TaskManagementPreference from "./components/mg1";
@@ -29,25 +29,22 @@ import Chatbot from "./components/chatbot/Chatbot";
 import ProtectedRoute from "./components/ProtectedRoute";
 import TaskAnalysis from "./components/TaskAnalysis";
 import HumeChat from "./components/HumeEVI";
-import { PersonalizationCard } from "./components/PersonalizationCard";
-
+import { PersonalizationCard } from "./components/PersonalizationCard"; // Keep only one import
 
 function App() {
   return (
     <Router>
       <Routes>
-        {/* <Route path="/" element={<Navigate to="/home" replace />} /> */}
-        <Route path="/" element={<LoginPage />} />
+        <Route path="/" element={<Navigate to="/login" replace />} />
         <Route path="/login" element={<LoginPage />} />
-        {/* <Route
+        <Route
           path="/home"
-          // element={
-          //   <ProtectedRoute>
-          //     <HomePage />
-          //   </ProtectedRoute>
-          // }
-
-        /> */}
+          element={
+            <ProtectedRoute>
+              <HomePage />
+            </ProtectedRoute>
+          }
+        />
         <Route path="/taskmanage" element={<TaskManagement />} />
         <Route path="/checklist" element={<TaskCheckList />} />
         <Route path="/camera" element={<CameraCapture />} />
@@ -67,18 +64,15 @@ function App() {
         <Route path="/desktop11" element={<Mg1Layout />} />
         <Route path="/desktop4" element={<Desktop4 />} />
         <Route path="/addtask" element={<AddTask />} />
-        <Route path="/home" element={<HomePage />} />
         <Route path="/create-mind-map" element={<CreateMindMap />} />
         <Route path="/setpriority" element={<SetPriorityLevel />} />
-        <Route path = "/insight" element={<ProductivityDashboard />}/>
+        <Route path="/insight" element={<ProductivityDashboard />} />
         <Route path="/task-1" element={<TaskManage1 />} />
         <Route path="/desktop30" element={<Desktop30 />} />
         <Route path="/chatbot" element={<Chatbot />} />
         <Route path="/analysis" element={<TaskAnalysis />} />
         <Route path="/humechat" element={<HumeChat />} />
-
-        <Route path ="/personalizationcard" element={<PersonalizationCard />} />
-
+        <Route path="/personalizationcard" element={<PersonalizationCard />} />
       </Routes>
     </Router>
   );

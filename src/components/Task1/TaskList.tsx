@@ -12,8 +12,8 @@ const TaskList: React.FC<TaskListProps> = ({ taskName }) => {
 
   const [tasks, setTasks] = useState([
     { id: 1, name: "Task - 1", status: "Ongoing" },
-    { id: 2, name: "Task - 2", status: "Done" },
-    { id: 3, name: "Task - 3", status: "Ongoing" },
+    { id: 2, name: "Task - 2", status: "Remaining" },
+    { id: 3, name: "Task - 3", status: "Remaining" },
   ]);
 
   const handleTaskClick = () => {
