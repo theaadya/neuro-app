@@ -1,24 +1,26 @@
 "use client";
 import * as React from "react";
+import { useNavigate } from "react-router-dom";
 import { BackgroundWithLogo } from "./support1";
 import { SettingsCard } from "./support4";
 import { NavigationButtons } from "./support3";
 
 export const SocialSupportSettings: React.FC = () => {
-  const [selectedOption, setSelectedOption] = React.useState<boolean | null>(
-    null,
-  );
+  const [selectedOption, setSelectedOption] = React.useState<boolean | null>(null);
+  const navigate = useNavigate();
 
   const handleNext = () => {
+    navigate("/DataPrivacy");
     if (selectedOption !== null) {
-      // Handle navigation
       console.log("Selected option:", selectedOption);
+      
     }
   };
 
   const handleSkip = () => {
-    // Handle skip action
+    navigate("/DataPrivacy"); 
     console.log("Skipped selection");
+    
   };
 
   return (

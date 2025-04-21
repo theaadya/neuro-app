@@ -17,16 +17,12 @@ export const CognitivePreferencesQuestion: React.FC = () => {
   };
 
   const handleNext = () => {
-    if (selectedAnswer) {
-      console.log("Selected answer:", selectedAnswer);
-      navigate("/CognitivePreferencesForm");
-      // Handle navigation to next question
-    }
+    console.log("Navigating to CognitivePreferencesForm...");
+    navigate("/CognitivePreferencesForm");
   };
 
   const handleSkip = () => {
-    // Handle skip logic
-    console.log("Question skipped");
+    console.log("Skipping to CognitivePreferencesForm...");
     navigate("/CognitivePreferencesForm");
   };
 
