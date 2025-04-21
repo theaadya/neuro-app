@@ -53,8 +53,15 @@ function HomePage() {
             <ActionButton onClick={() => navigate("/insight")}>
               Get your productivity trends
             </ActionButton>
-            <ActionButton onClick={() => navigate("/desktop30")}>
-              Be a part of Community
+            <ActionButton>
+              <a
+                href="/Vr_lounge.html"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-black"
+              >
+                Join the VR Lounge
+              </a>
             </ActionButton>
           </div>
         </div>
