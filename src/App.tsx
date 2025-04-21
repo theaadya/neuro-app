@@ -64,7 +64,7 @@ function App() {
         <Route path="/desktop11" element={<Mg1Layout />} />
         <Route path="/desktop4" element={<Desktop4 />} />
         <Route path="/addtask" element={<AddTask />} />
-        <Route path="/create-mind-map" element={<CreateMindMap />} />
+        <Route path="/mindmap" element={<CreateMindMap />} />
         <Route path="/setpriority" element={<SetPriorityLevel />} />
         <Route path="/insight" element={<ProductivityDashboard />} />
         <Route path="/task-1" element={<TaskManage1 />} />

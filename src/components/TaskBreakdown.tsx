@@ -11,6 +11,9 @@ export const TaskBreakdown: React.FC<TaskBreakdownProps> = ({ taskDescription })
   const handleCreateChecklist = () => {
     navigate("/checklist", { state: { taskDescription } });
   };
+  const handleCreateMindMap = () => {
+    navigate("/mindmap", { state: { taskDescription } });
+  };
   return (
     <section className="flex flex-col mt-12 w-full text-xl max-md:mt-8 max-md:max-w-full">
       <div className="flex flex-col self-end max-w-full text-black w-[400px]">
@@ -21,7 +24,7 @@ export const TaskBreakdown: React.FC<TaskBreakdownProps> = ({ taskDescription })
           Create Checklist
         </ActionButton>
         <ActionButton 
-          onClick={() => navigate("/create-mind-map")}
+          onClick={handleCreateMindMap}
           className="mt-5 max-md:max-w-full">
           Create Mind Map
         </ActionButton>
