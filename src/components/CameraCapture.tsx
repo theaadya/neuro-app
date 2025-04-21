@@ -27,6 +27,7 @@ const CameraCapture: React.FC = () => {
   const [fatigueHistory, setFatigueHistory] = useState<number[]>([]);
   const [popupType, setPopupType] = useState<"stress" | "fatigue" | null>(null);
   const [disablePopup, setDisablePopup] = useState(false);
+  const [showExplanation, setShowExplanation] = useState(false);
 
   const startSession = async () => {
     setIsSessionActive(true);
@@ -297,6 +298,29 @@ const CameraCapture: React.FC = () => {
                 Don't Show Again
               </button>
             </div>
+
+            {/* Add "Why was this shown?" button */}
+            <button
+              className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg"
+              onClick={() => setShowExplanation(true)}
+            >
+              Why was this shown?
+            </button>
+
+            {/* Explanation Section */}
+            {showExplanation && (
+              <div className="mt-4 p-4 bg-gray-100 rounded-lg text-left">
+                <p className="text-sm text-gray-700">
+                  This message is shown because your stress or fatigue levels have been consistently high for the last three measurements. Taking a break can help you relax and recharge.
+                </p>
+                <button
+                  className="mt-2 px-4 py-1 bg-gray-300 text-black rounded-lg"
+                  onClick={() => setShowExplanation(false)}
+                >
+                  Close
+                </button>
+              </div>
+            )}
           </div>
         </div>
       )}
