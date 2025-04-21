@@ -4,6 +4,8 @@ import torch.optim as optim
 import torch.nn.functional as F
 import random
 from user_sig_weights import input_score_weights
+import json
+import os
 
 emotion_types = list(input_score_weights.keys())
 num_emotions = len(emotion_types)
@@ -106,13 +108,18 @@ def find_ground_truth(all_inputs):
             output_score[state] = 1.0/3
     return output_score
 
-def train_model(model, epochs=10):
+def train_model(model, epochs=10, save_data=True, data_file="training_data.jsonl"):
     optimizer = optim.Adam(model.parameters(), lr=1e-3)
     loss_fn = nn.MSELoss()
     batch_size = 16
 
+    if save_data and os.path.exists(data_file):
+        os.remove(data_file)  # Clear previous data file if it exists
+
     for epoch in range(epochs):
+        batch_data = []
         batch_e, batch_v, batch_t, batch_fidx, batch_vidx, batch_y = [], [], [], [], [], []
+
         for _ in range(batch_size):
             e, v, t, f_idxs, v_idxs, y = generate_random_input_and_label()
             batch_e.append(e)
@@ -122,6 +129,25 @@ def train_model(model, epochs=10):
             batch_vidx.append(v_idxs)
             batch_y.append(y)
 
+            # Save raw input and label (optional: convert to list for JSON compatibility)
+            if save_data:
+                sample = {
+                    "face_scores": e.tolist(),
+                    "voice_scores": v.tolist(),
+                    "task_score": t.item(),
+                    "face_idxs": f_idxs.tolist(),
+                    "voice_idxs": v_idxs.tolist(),
+                    "label": y.tolist()
+                }
+                batch_data.append(sample)
+
+        # Save batch to file
+        if save_data:
+            with open(data_file, "a") as f:
+                for sample in batch_data:
+                    f.write(json.dumps(sample) + "\n")
+
+        # Convert to tensors and train
         e = torch.stack(batch_e)
         v = torch.stack(batch_v)
         t = torch.stack(batch_t)
