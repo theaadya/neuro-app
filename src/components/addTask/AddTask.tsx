@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import { useState } from "react";
 import { NavigationBar } from "../NavigationBar";
 import { Calendar } from "./Calendar";
 import { TimePicker } from "./TimePicker";
@@ -12,8 +12,13 @@ export const AddTask = () => {
   const navigate = useNavigate();
 
   const handleDoneClick = () => {
-    navigate("/task-1"); // ✅ Navigates to task-1 route
-  };
+    navigate("/task-1", {
+      state: {
+        taskName
+      },
+    });
+  };  
+  const [taskName, setTaskName] = useState("");
   return (
     <main className="overflow-hidden bg-black">
       <section className="flex flex-col pt-8 pr-20 pb-16 pl-1 w-full bg-white rounded-xl border border-black border-solid max-md:pr-5 max-md:max-w-full">
@@ -27,7 +32,9 @@ export const AddTask = () => {
 
                 <input
                   type="text"
-                  placeholder="Task - 5"
+                  placeholder="Task - 4"
+                  value={taskName}
+                  onChange={(e) => setTaskName(e.target.value)}
                   className="px-12 py-7 mt-14 max-w-full text-2xl text-white bg-white bg-opacity-10 rounded-[30px] w-[707px] max-md:px-5 max-md:mt-10"
                 />
 

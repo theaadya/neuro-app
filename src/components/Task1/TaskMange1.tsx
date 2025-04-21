@@ -4,8 +4,12 @@ import {NavigationBar} from "../NavigationBar";
 import TaskHeader from "./TaskHeader";
 import TaskList from "./TaskList";
 import Sidebar from "./Sidebar";
+import { useLocation } from "react-router-dom";
 
 function TaskManage1() {
+  const location = useLocation();
+  const { taskName } = location.state || {};
+
   return (
     <section className="overflow-hidden bg-black">
       <main className="flex flex-col py-8 pr-10 pl-1 w-full bg-white border border-black border-solid max-md:pr-5 max-md:max-w-full">
@@ -18,7 +22,7 @@ function TaskManage1() {
           >
             <div className="flex gap-5 max-md:flex-col">
               <div className="w-[74%] max-md:ml-0 max-md:w-full">
-                <TaskList />
+                <TaskList taskName={taskName} />
               </div>
               <div className="ml-5 w-[26%] max-md:ml-0 max-md:w-full">
                 <Sidebar />

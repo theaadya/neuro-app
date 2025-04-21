@@ -2,20 +2,30 @@ import * as React from "react";
 import { useNavigate } from "react-router-dom";
 
 interface TaskCardProps {
+  taskDescription: string;
   onDescriptionChange: (description: string) => void;
 }
 
-export const TaskCard: React.FC<TaskCardProps> = ({ onDescriptionChange }) => {
+export const TaskCard: React.FC<TaskCardProps> = ({
+  taskDescription: initialDescription,
+  onDescriptionChange,
+}) => {
   const navigate = useNavigate();
   const [isEditing, setIsEditing] = React.useState(false);
-  const [taskDescription, setTaskDescription] = React.useState(
-    "Prepare for Tomorrow's Sprint Meeting (Backend Team)"
-  );
+  const [taskDescription, setTaskDescription] = React.useState(initialDescription);
   const [showPermissionModal, setShowPermissionModal] = React.useState(false);
   const [permissionError, setPermissionError] = React.useState<string | null>(null);
 
+  // Update local state if the prop changes (but only when not editing)
+  React.useEffect(() => {
+    if (!isEditing && initialDescription) {
+      setTaskDescription(initialDescription);
+    }
+  }, [initialDescription, isEditing]);
+
   const handleEditClick = () => setIsEditing(true);
   const handleBlur = () => setIsEditing(false);
+
   const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setTaskDescription(event.target.value);
     onDescriptionChange(event.target.value);

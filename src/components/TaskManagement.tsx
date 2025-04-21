@@ -1,17 +1,31 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import { NavigationBar } from "./NavigationBar";
 import { TaskCard } from "./TaskCard";
 import { TaskBreakdown } from "./TaskBreakdown";
 import { CapacityIndicator } from "./CapacityIndicator";
 
 export const TaskManagement: React.FC = () => {
-  const [taskDescription, setTaskDescription] = useState<string>("");
+  const location = useLocation();
+  const taskNameFromState = location.state?.taskName ?? "";
+  console.log(taskNameFromState)
+
+  const [taskDescription, setTaskDescription] = useState<string>(
+    taskNameFromState || "Prepare for Tomorrow's Sprint Meeting (Backend Team)"
+  );  
 
   const handleDescriptionChange = (description: string) => {
-    setTaskDescription(description); // Update the task description state
-    console.log("Updated Task Description:", description); // You can also perform other actions here
+    setTaskDescription(description);
+    console.log("Updated Task Description:", description);
   };
+
+  // If you want to update description when navigating to this page again
+  useEffect(() => {
+    if (taskNameFromState) {
+      setTaskDescription(taskNameFromState);
+    }
+  }, [taskNameFromState]);
 
   return (
     <main className="overflow-hidden bg-black h-screen">
@@ -34,10 +48,12 @@ export const TaskManagement: React.FC = () => {
           <div className="mt-4 mr-6 ml-4 max-md:mr-2.5 max-md:max-w-full">
             <div className="flex gap-4 max-md:flex-col">
               <div className="w-[46%] max-md:w-full">
-                <TaskCard onDescriptionChange={handleDescriptionChange} />
+              <TaskCard
+                taskDescription={taskDescription}
+                onDescriptionChange={handleDescriptionChange}
+              />
               </div>
               <div className="ml-3 w-[54%] max-md:w-full">
-                {/* Pass taskDescription as a prop */}
                 <TaskBreakdown taskDescription={taskDescription} />
               </div>
             </div>
