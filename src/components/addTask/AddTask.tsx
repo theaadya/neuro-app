@@ -1,19 +1,23 @@
 "use client";
 
-import React from "react";
+import { useState } from "react";
 import { NavigationBar } from "../NavigationBar";
 import { Calendar } from "./Calendar";
 import { TimePicker } from "./TimePicker";
 import { Button } from "./Button";
 import { useNavigate } from "react-router-dom";
 
-
 export const AddTask = () => {
   const navigate = useNavigate();
 
   const handleDoneClick = () => {
-    navigate("/task-1"); // ✅ Navigates to task-1 route
-  };
+    navigate("/task-1", {
+      state: {
+        taskName
+      },
+    });
+  };  
+  const [taskName, setTaskName] = useState("");
   return (
     <main className="overflow-hidden bg-black">
       <section className="flex flex-col pt-8 pr-20 pb-16 pl-1 w-full bg-white rounded-xl border border-black border-solid max-md:pr-5 max-md:max-w-full">
@@ -27,7 +31,9 @@ export const AddTask = () => {
 
                 <input
                   type="text"
-                  placeholder="Task - 5"
+                  placeholder="Task - 4"
+                  value={taskName}
+                  onChange={(e) => setTaskName(e.target.value)}
                   className="px-12 py-7 mt-14 max-w-full text-2xl text-white bg-white bg-opacity-10 rounded-[30px] w-[707px] max-md:px-5 max-md:mt-10"
                 />
 
@@ -66,7 +72,10 @@ export const AddTask = () => {
             <aside className="ml-5 w-[26%] max-md:ml-0 max-md:w-full">
               <div className="flex flex-col grow mt-12 text-2xl text-white max-md:mt-10">
                 <span className="self-end mr-6 max-md:mr-2.5">90%</span>
-                <button className="px-16 pt-4 pb-1.5 bg-black mt-[568px] rounded-[80px] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] max-md:px-5 max-md:mt-10">
+                <button
+                  id="save-task"
+                  className="px-16 pt-4 pb-1.5 bg-black mt-[568px] rounded-[80px] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] max-md:px-5 max-md:mt-10"
+                >
                   chat with <br />
                   NURO
                 </button>
@@ -75,6 +84,23 @@ export const AddTask = () => {
           </div>
         </div>
       </section>
+      <script>
+        {`
+          document.getElementById('save-task').addEventListener('click', () => {
+            const selectedDate = document.getElementById('task-date').value;
+            const selectedTime = document.getElementById('task-time').value;
+
+            if (!selectedDate || !selectedTime) {
+              alert('Please select both date and time.');
+              return;
+            }
+
+            console.log(\`Task Date: \${selectedDate}\`);
+            console.log(\`Task Time: \${selectedTime}\`);
+            alert(\`Task scheduled for \${selectedDate} at \${selectedTime}\`);
+          });
+        `}
+      </script>
     </main>
   );
 };

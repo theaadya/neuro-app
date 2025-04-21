@@ -3,34 +3,36 @@ import React, { useState } from "react";
 import TaskItem from "./TaskItem";
 import { useNavigate } from "react-router-dom";
 
-const TaskList = () => {
+type TaskListProps = {
+  taskName?: string;
+};
+
+const TaskList: React.FC<TaskListProps> = ({ taskName }) => {
   const navigate = useNavigate();
 
   const [tasks, setTasks] = useState([
     { id: 1, name: "Task - 1", status: "Ongoing" },
     { id: 2, name: "Task - 2", status: "Remaining" },
     { id: 3, name: "Task - 3", status: "Remaining" },
-    { id: 4, name: "Task - 4", status: "Remaining" },
   ]);
 
   const handleTaskClick = () => {
-    navigate(`/taskmanage/`); // Navigate to the taskmanage page with the task ID
+    navigate(`/taskmanage/`);
   };
 
-  const handleAddTask = () => {
-    // In a real application, this would open a form or modal
-    const newTask = {
-      id: tasks.length + 1,
-      name: `Task - ${tasks.length + 1}`,
-      status: "Ongoing",
-    };
-    setTasks((prevTasks) => [...prevTasks, newTask]);
-  };
+  const handleNewTaskClick = () => {
+    if (taskName) {
+      navigate(`/taskmanage/`, {
+        state: { taskName },
+      });
+    } else {
+      navigate(`/taskmanage/`);
+    }
+  };  
 
   return (
     <section className="flex flex-col pt-3 pr-4 pb-11 pl-12 mx-auto w-full text-2xl bg-red-400 rounded-[30px] max-md:pl-5 max-md:mt-10 max-md:max-w-full">
       <div className="flex flex-wrap gap-5 justify-between text-white max-md:max-w-full">
-        <h2 className="self-start mt-5">View Tasks</h2>
         <button
           onClick={() => navigate("/addtask")}
           className="px-16 pt-3 pb-6 bg-stone-400 rounded-[80px] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] max-md:px-5"
@@ -44,7 +46,7 @@ const TaskList = () => {
           {tasks.map((task) => (
             <div
               key={task.id}
-              onClick={() => handleTaskClick()} // Make the task clickable
+              onClick={handleTaskClick}
               className="cursor-pointer"
             >
               <TaskItem
@@ -54,6 +56,18 @@ const TaskList = () => {
               />
             </div>
           ))}
+
+          {taskName && (
+            <div
+              onClick={handleNewTaskClick}
+              className="cursor-pointer mt-6"
+            >
+              <TaskItem
+                name="Task - 4"
+                status="Ongoing"
+              />
+            </div>
+          )}
         </div>
       </div>
     </section>
