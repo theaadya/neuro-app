@@ -257,7 +257,7 @@ const CameraCapture: React.FC = () => {
             <>
               <video ref={videoRef} autoPlay className="w-full max-w-md rounded-lg" />
               <button onClick={stopSession} className="px-12 py-2 mt-2 rounded-[80px] shadow-md text-2xl bg-stone-400 text-white">
-                End Session
+                Task Completed
               </button>
               <p className="mt-2 text-gray-700">Images Captured: {imageCount}</p>
             </>
