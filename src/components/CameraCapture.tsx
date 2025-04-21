@@ -21,6 +21,13 @@ const CameraCapture: React.FC = () => {
   const dataArrayRef = useRef<Uint8Array | null>(null);
   const detectionFrameRef = useRef<number>(0);
 
+  const [showPopup, setShowPopup] = useState(false);
+  const [popupMessage, setPopupMessage] = useState("");
+  const [stressHistory, setStressHistory] = useState<number[]>([]);
+  const [fatigueHistory, setFatigueHistory] = useState<number[]>([]);
+  const [popupType, setPopupType] = useState<"stress" | "fatigue" | null>(null);
+  const [disablePopup, setDisablePopup] = useState(false);
+
   const startSession = async () => {
     setIsSessionActive(true);
     setImageCount(0);
@@ -118,6 +125,32 @@ const CameraCapture: React.FC = () => {
       if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
       const data = await response.json();
       setEmotions(data.message ? [{ name: data.message, score: "-" }] : data[0].top_5_emotions);
+  
+      const groundTruth = data[0].ground_truth;
+      console.log("ground truth", groundTruth);
+      
+      // Update stress history
+      setStressHistory(prev => {
+        const updated = [...prev.slice(-2), groundTruth.stress_score];
+        if (!disablePopup && updated.length === 3 && updated.every(score => score > 0.3)) {
+          setPopupMessage("You seem stressed. Would you like to take a break?");
+          setPopupType("stress");
+          setShowPopup(true);
+        }        
+        return updated;
+      });
+
+      // Update fatigue history
+      setFatigueHistory(prev => {
+        const updated = [...prev.slice(-2), groundTruth.fatigue_score];
+        if (!disablePopup && updated.length === 3 && updated.every(score => score > 0.3)) {
+          setPopupMessage("You seem tired. Would you like to take a break?");
+          setPopupType("fatigue");
+          setShowPopup(true);
+        }        
+        return updated;
+      });
+  
     } catch (err) {
       console.error(err);
     } finally {
@@ -125,6 +158,24 @@ const CameraCapture: React.FC = () => {
     }
   };
 
+  const handlePopupResponse = (answer: "yes" | "no" | "disable") => {
+    setShowPopup(false);
+  
+    if (answer === "yes") {
+      stopSession();
+    } else if (answer === "no") {
+      if (popupType === "stress") {
+        setStressHistory([]);
+      } else if (popupType === "fatigue") {
+        setFatigueHistory([]);
+      }
+    } else if (answer === "disable") {
+      setDisablePopup(true);
+    }
+  
+    setPopupType(null);
+  };
+      
   const sendAudioToAPI = async (audioBlob: Blob) => {
     console.log("audio detected");
     const formData = new FormData();
@@ -221,6 +272,34 @@ const CameraCapture: React.FC = () => {
           </div>
         )}
       </div>
+      
+      {showPopup && (
+        <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <div className="bg-white p-8 rounded-xl shadow-lg text-center max-w-md">
+            <p className="text-xl font-semibold mb-6">{popupMessage}</p>
+            <div className="flex justify-center gap-4 flex-wrap">
+              <button
+                className="px-6 py-2 bg-rose-400 text-white rounded-full"
+                onClick={() => handlePopupResponse("yes")}
+              >
+                Yes
+              </button>
+              <button
+                className="px-6 py-2 bg-stone-500 text-black rounded-full"
+                onClick={() => handlePopupResponse("no")}
+              >
+                No
+              </button>
+              <button
+                className="px-6 py-2 bg-stone-300 text-white rounded-full"
+                onClick={() => handlePopupResponse("disable")}
+              >
+                Don't Show Again
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
