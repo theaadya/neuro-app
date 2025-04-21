@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VR Calm Lounge</title>
+  <!-- A-Frame core -->
+  <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
+  <!-- Environment & Extras -->
+  <script src="https://unpkg.com/aframe-environment-component@1.3.1/dist/aframe-environment-component.min.js"></script>
+  <style>
+    body { margin: 0; overflow: hidden; font-family: sans-serif; }
+    #welcomeScreen {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      background: linear-gradient(to bottom right, #b2dfdb, #ffffff);
+      display: flex; justify-content: center; align-items: center; z-index: 10;
+    }
+    #joinBtn {
+      font-size: 1.2em; padding: 0.6em 1.2em; background-color: #00796B;
+      color: white; border: none; border-radius: 0.4em; cursor: pointer;
+    }
+    #joinBtn:hover { background-color: #004d40; }
+    a-scene { display: none; }
+    /* Overlay UI Instructions */
+    #uiOverlay {
+      position: absolute; top: 1em; left: 1em; z-index: 5;
+      background: rgba(255,255,255,0.7); padding: 0.5em 1em;
+      border-radius: 0.3em; font-size: 0.9em; color: #333;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <div id="welcomeScreen">
+    <button id="joinBtn">Join the Calm Lounge</button>
+  </div>
+
+  <div id="uiOverlay" hidden>
+    • click the green orb to breathe and zoom.
+  </div>
+
+  <a-scene id="vrScene"
+           vr-mode-ui="enabled: true"
+           environment="preset: forest; skyType: gradient; skyColor: #88a; ground: hills; fog: 0.5; lighting: soft;">
+
+    <!-- Lights -->
+    <a-entity id="ambientLight" light="type: ambient; intensity: 0.5"></a-entity>
+    <a-entity id="directionalLight" light="type: directional; intensity: 0.6" position="2 4 2"></a-entity>
+
+    <!-- Seating -->
+    <a-entity id="seating">
+      <a-circle position="0 0 -1.2" radius="1.5" color="#A5D6A7" rotation="-90 0 0"></a-circle>
+      <a-sphere position="0 0.2 -1" radius="0.2" color="#C8E6C9"></a-sphere>
+      <a-sphere position="0.7 0.2 -0.6" radius="0.2" color="#C8E6C9"></a-sphere>
+      <a-sphere position="-0.7 0.2 -0.6" radius="0.2" color="#C8E6C9"></a-sphere>
+      <a-sphere position="0.7 0.2 -1.4" radius="0.2" color="#C8E6C9"></a-sphere>
+      <a-sphere position="-0.7 0.2 -1.4" radius="0.2" color="#C8E6C9"></a-sphere>
+    </a-entity>
+
+    <!-- Floor -->
+    <a-plane id="floor" rotation="-90 0 0" width="20" height="20" color="#456" shadow="receive:true"></a-plane>
+
+    <!-- Ambient Fountain -->
+    <a-entity position="0 1.2 -2">
+      <a-cylinder radius="0.1" height="0.4" color="#B3E5FC"></a-cylinder>
+      <a-sound src="url(https://cdn.example.com/sounds/ambient-fountain.mp3)"
+               autoplay="true" loop="true" positional="true" maxDistance="15" volume="0.3"></a-sound>
+    </a-entity>
+
+    <!-- Breathing Orb -->
+    <a-entity id="breathingOrb" position="0 1 -1.2">
+      <a-sphere id="orbSphere" radius="0.4" color="#AED581" opacity="0.8"></a-sphere>
+      <a-text value="Click to Breathe" align="center" position="0 0.7 0" color="#333"></a-text>
+      <a-light type="point" color="#AEEA00" intensity="0.3" distance="5"></a-light>
+    </a-entity>
+
+    <!-- Interactive Zones -->
+    <!-- Nature Zone -->
+    <a-entity id="forestZone" geometry="primitive: box; height: 0.1; width: 4; depth: 4"
+              material="color: #133d21; opacity: 0.5" position="0 0.05 4">
+      <a-text value="Forest Zone" align="center" position="0 0.2 0" color="#fff"></a-text>
+    </a-entity>
+
+    <!-- Mood‑Shifting Sky -->
+    <a-sky id="sky" radius="30" color="#88a"></a-sky>
+    <a-ring id="sunrise" radius-inner="10" radius-outer="12" rotation="-90 0 0"
+            position="0 -9.9 0" material="opacity:0"></a-ring>
+    <a-ring id="rain"    radius-inner="12" radius-outer="14" rotation="-90 0 0"
+            position="0 -9.9 0" material="opacity:0"></a-ring>
+
+    <!-- Floating Words -->
+    <a-text class="float-word" value="Calm" position="1 2 -1"
+            animation="property: position; to:1 2.5 -1; dir:alternate; dur:3000; loop:true"></a-text>
+    <a-text class="float-word" value="Focus" position="-1 1.5 -1.5"
+            animation="property: position; to:-1 1.8 -1.5; dir:alternate; dur:3500; loop:true"></a-text>
+
+    <!-- Whispering Tree -->
+    <a-entity id="whisperingTree" gltf-model="#treeModel" position="3 0 -2"></a-entity>
+
+    <!-- Camera Rig with Cursor -->
+    <a-entity id="cameraRig" position="0 1.6 0">
+      <a-camera>
+        <a-cursor fuse="true" fuseTimeout="1000"
+                  geometry="primitive:ring; radiusInner:0.01; radiusOuter:0.02"
+                  material="color:white; shader:flat"></a-cursor>
+      </a-camera>
+    </a-entity>
+
+    <!-- Users -->
+    <a-entity id="users"></a-entity>
+  </a-scene>
+
+  <script>
+    // Helper: play looping sound
+    function playSound(src) {
+      let audio = new Audio(src);
+      audio.loop = true;
+      audio.volume = 0.3;
+      audio.play();
+    }
+    // Helper: show temporary overlay message
+    function showOverlay(text) {
+      const ui = document.getElementById('uiOverlay');
+      ui.textContent = text;
+      setTimeout(() => { ui.textContent = '• Gaze or click the green orb to breathe and zoom.'; }, 3000);
+    }
+
+    // Join button
+    document.getElementById('joinBtn').addEventListener('click', () => {
+      document.getElementById('welcomeScreen').style.display = 'none';
+      document.getElementById('vrScene').style.display = 'block';
+      document.getElementById('uiOverlay').hidden = false;
+    });
+
+    const users = [
+      { id: 'user1', name: 'Alice', pos:{x:-1.2,y:1.4,z:-0.8}, stress:0.2 },
+      { id: 'user2', name: 'Bob',   pos:{x: 1.2,y:1.4,z:-0.8}, stress:0.5 }
+    ];
+
+    // Init avatars
+    function initUsers() {
+      const container = document.getElementById('users');
+      users.forEach((u, i) => {
+        const ent = document.createElement('a-entity');
+        ent.setAttribute('id', u.id);
+        ent.setAttribute('position', `${u.pos.x} ${u.pos.y-2} ${u.pos.z}`);
+        ent.setAttribute('animation__entry', `property: position; to:${u.pos.x} ${u.pos.y} ${u.pos.z}; dur:1200; easing:easeOutElastic`);
+        ent.classList.add('avatar');
+        // head
+        const head = document.createElement('a-sphere'); head.setAttribute('radius','0.3'); head.setAttribute('material','color:#4FC3F7');
+        ent.appendChild(head);
+        // halo
+        const halo = document.createElement('a-ring');
+        halo.setAttribute('id', `${u.id}-halo`);
+        halo.setAttribute('radius-inner','0.35'); halo.setAttribute('radius-outer','0.45'); halo.setAttribute('rotation','-90 0 0');
+        ent.appendChild(halo);
+        // label
+        const label = document.createElement('a-text');
+        label.setAttribute('id', `${u.id}-label`);
+        label.setAttribute('align','center'); label.setAttribute('position','0 0.6 0');
+        ent.appendChild(label);
+        container.appendChild(ent);
+        updateAvatar(u.id, u.stress);
+      });
+    }
+
+    // Update avatar visuals
+    function updateAvatar(id, stress) {
+      const halo = document.getElementById(`${id}-halo`);
+      const label = document.getElementById(`${id}-label`);
+      if (!halo || !label) return;
+      const r = stress*255, g=(1-stress)*255;
+      halo.setAttribute('material', `color: rgb(${r},${g},0); opacity:${0.5+0.5*stress}`);
+      label.setAttribute('value', `${users.find(u=>u.id===id).name} · ${Math.round(stress*100)}%`);
+    }
+
+    // Stress simulation
+    function simulateUpdates() {
+      setInterval(()=>{
+        users.forEach(u=> u.stress = Math.max(0,Math.min(1,u.stress + (Math.random()-0.5)*0.05)));
+        users.forEach(u=> updateAvatar(u.id, u.stress));
+      },2000);
+    }
+
+    // DOM ready
+    document.addEventListener('DOMContentLoaded', () => {
+      initUsers(); simulateUpdates();
+
+      // Orb click: breathing + zoom
+      const orb = document.querySelector('#orbSphere');
+      orb.addEventListener('click', ()=>{
+        orb.setAttribute('animation__breathe','property:scale;dir:alternate;dur:2000;loop:true;to:1.5 1.5 1.5');
+        document.querySelector('#cameraRig')
+          .setAttribute('animation__zoom','property:position;to:0 1.6 -0.5;dur:1000;easing:easeInOutQuad');
+      });
+
+      // Forest zone transition
+      document.querySelector('#forestZone').addEventListener('mouseenter', () => {
+        document.querySelector('a-scene')
+          .setAttribute('animation__fadeEnv','property:opacity;to:0;dur:800');
+        setTimeout(() => {
+          playSound('forest_ambient.mp3');
+          document.querySelector('a-scene').setAttribute('environment', 'preset: forest; fog: 0.8; lighting: dawn');
+          document.querySelector('a-scene')
+            .setAttribute('animation__fadeIn','property:opacity;to:1;dur:800');
+        }, 800);
+      });
+
+      // Sky mood changer
+      const sky = document.querySelector('#sky');
+      sky.addEventListener('click', (e) => {
+        const tgt = e.target.id;
+        if (tgt === 'sunrise') {
+          sky.setAttribute('animation__color','property:color;to:#FFCC80;dur:1500');
+          playSound('hope_chimes.mp3');
+        }
+        if (tgt === 'rain') {
+          sky.setAttribute('animation__clouds','property:environment.clouds;to:0.7;dur:2000');
+          playSound('rain_loop.mp3');
+        }
+      });
+
+      // Floating word catch
+      document.querySelectorAll('.float-word').forEach(txt => {
+        txt.addEventListener('mouseenter', () => {
+          const affirm = document.createElement('a-text');
+          affirm.setAttribute('value','You\'ve got this!');
+          affirm.setAttribute('position', txt.getAttribute('position'));
+          affirm.setAttribute('animation','property:opacity;from:1;to:0;dur:1500');
+          document.querySelector('a-scene').appendChild(affirm);
+          txt.setAttribute('visible','false');
+        });
+      });
+
+      // Whispering tree
+      document.querySelector('#whisperingTree').addEventListener('mouseenter', () => {
+        const lines = [
+          "Breathe with the wind.",
+          "Let your thoughts drift.",
+          "Roots run deep; stand firm."
+        ];
+        const msg = lines[Math.floor(Math.random()*lines.length)];
+        playSound('whisper.mp3');
+        showOverlay(msg);
+      });
+    });
+  </script>
+</body>
+</html>
+
