@@ -2,7 +2,7 @@ import * as React from "react";
 import { useNavigate } from "react-router-dom";
 
 interface TaskCardProps {
-  onDescriptionChange: (description: string) => void; // Callback function to send the description to the parent
+  onDescriptionChange: (description: string) => void;
 }
 
 export const TaskCard: React.FC<TaskCardProps> = ({ onDescriptionChange }) => {
@@ -11,18 +11,30 @@ export const TaskCard: React.FC<TaskCardProps> = ({ onDescriptionChange }) => {
   const [taskDescription, setTaskDescription] = React.useState(
     "Prepare for Tomorrow's Sprint Meeting (Backend Team)"
   );
+  const [showPermissionModal, setShowPermissionModal] = React.useState(false);
+  const [permissionError, setPermissionError] = React.useState<string | null>(null);
 
-  const handleEditClick = () => {
-    setIsEditing(true);
-  };
-
-  const handleBlur = () => {
-    setIsEditing(false);
-  };
-
+  const handleEditClick = () => setIsEditing(true);
+  const handleBlur = () => setIsEditing(false);
   const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setTaskDescription(event.target.value);
-    onDescriptionChange(event.target.value); // Send updated description to the parent
+    onDescriptionChange(event.target.value);
+  };
+
+  const handleStartClick = () => {
+    setShowPermissionModal(true);
+  };
+
+  const requestPermissions = async () => {
+    try {
+      setPermissionError(null);
+      await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+      setShowPermissionModal(false);
+      navigate("/camera");
+    } catch (err) {
+      console.error("Permission denied or error occurred", err);
+      setPermissionError("Camera and microphone access is required for analysis.");
+    }
   };
 
   return (
@@ -30,7 +42,7 @@ export const TaskCard: React.FC<TaskCardProps> = ({ onDescriptionChange }) => {
       <div className="flex gap-3 justify-between w-full max-md:max-w-full">
         <h2 className="self-start">TASK - 1</h2>
         <button
-          onClick={() => navigate("/camera")}
+          onClick={handleStartClick}
           className="flex gap-4 px-4 py-1.5 text-sm whitespace-nowrap bg-stone-400 rounded-[40px] shadow-[0px_2px_2px_rgba(0,0,0,0.2)] max-md:pl-3"
         >
           <span>START</span>
@@ -41,6 +53,7 @@ export const TaskCard: React.FC<TaskCardProps> = ({ onDescriptionChange }) => {
           />
         </button>
       </div>
+
       <div
         className="flex items-center justify-center shrink-0 mt-6 max-w-full bg-white bg-opacity-10 h-[200px] rounded-[16px] w-[460px] max-md:mt-5 p-4 cursor-pointer"
         onClick={handleEditClick}
@@ -59,6 +72,36 @@ export const TaskCard: React.FC<TaskCardProps> = ({ onDescriptionChange }) => {
           </p>
         )}
       </div>
+
+      {/* Permission Modal */}
+      {showPermissionModal && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <div className="bg-white rounded-xl p-6 text-black w-[90%] max-w-md shadow-lg">
+            <h3 className="text-lg font-bold mb-2">Permission Required</h3>
+            <p className="mb-4">
+              To provide a more accurate analysis of your session, we need access to your camera and microphone.
+              This helps us understand facial expressions and voice tone for better feedback.
+            </p>
+            {permissionError && (
+              <p className="text-red-600 mb-2">{permissionError}</p>
+            )}
+            <div className="flex justify-end gap-4">
+              <button
+                className="px-4 py-2 text-white bg-stone-500 rounded-lg"
+                onClick={() => setShowPermissionModal(false)}
+              >
+                Cancel
+              </button>
+              <button
+                className="px-4 py-2 text-white bg-rose-600 rounded-lg"
+                onClick={requestPermissions}
+              >
+                Allow & Continue
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </article>
   );
 };

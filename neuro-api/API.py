@@ -78,6 +78,7 @@ def analyze_faces(filepaths):
 
             # Sort emotions by score and keep top 5
             top_5_emotions = sorted(emotions, key=lambda x: x["score"], reverse=True)[:5]
+            labels = find_ground_truth(top_5_emotions)
 
             for emotion in top_5_emotions:
                 session_emotions[emotion["name"]].append(emotion["score"])
@@ -86,7 +87,8 @@ def analyze_faces(filepaths):
 
             results.append({
                 "face": face_file,
-                "top_5_emotions": top_5_emotions
+                "top_5_emotions": top_5_emotions,
+                "ground_truth": labels
             })
 
     return results

@@ -1,21 +1,26 @@
 "use client";
 
 import * as React from "react";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 import { PreferenceOption } from "./PreferenceOption";
 import { NavigationButtons } from "./NavigationButtons";
 import { QuestionHeader } from "./QuestionHeader";
 
 const TaskManagementPreferences: React.FC = () => {
+  const navigate = useNavigate(); // Initialize useNavigate
+
   const handleOptionSelect = (option: string) => {
     console.log("Selected option:", option);
   };
 
   const handleNext = () => {
-    console.log("Next clicked");
+    console.log("Navigating to PersonalizationForm...");
+    navigate("/PersonalizationForm"); // Navigate to PersonalizationForm
   };
 
   const handleSkip = () => {
-    console.log("Skip clicked");
+    console.log("Skipping to PersonalizationForm...");
+    navigate("/PersonalizationForm"); // Navigate to PersonalizationForm
   };
 
   return (

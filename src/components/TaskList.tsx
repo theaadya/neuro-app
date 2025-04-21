@@ -1,53 +1,63 @@
-import React, { useState } from "react";
-import { fetchTaskBreakdown } from "../utils/api";
+import * as React from "react";
 
 interface TaskListProps {
-  taskDescription?: string; // Add taskDescription as an optional prop
+  taskDescription: string;
 }
 
-export const TaskList: React.FC<TaskListProps> = ({ taskDescription: initialTaskDescription = "" }) => {
-  const [taskDescription, setTaskDescription] = useState(initialTaskDescription);
-  const [tasks, setTasks] = useState<string[]>([]);
+export const TaskList: React.FC<TaskListProps> = ({ taskDescription }) => {
+  const [checklistItems, setChecklistItems] = React.useState<string[]>([]);
+  const [expanded, setExpanded] = React.useState(false);
 
-  const handleGenerateTasks = async () => {
-    if (!taskDescription.trim()) {
-      alert("Please enter a task description.");
-      return;
-    }
+  React.useEffect(() => {
+    const fetchChecklist = async () => {
+      const fullMessage = `Break down the following task into not more than 7 actionable steps. Respond with only the main bullet points in a checklist format. Avoid paragraphs. Task: ${taskDescription}`;
 
-    try {
-      const breakdown = await fetchTaskBreakdown(taskDescription);
-      const steps = breakdown.split("\n").filter((step: string) => step.trim() !== ""); // Explicitly type 'step' as string
-      setTasks(steps);
-    } catch (error) {
-      alert("Failed to generate task breakdown. Please try again.");
-    }
-  };
+      try {
+        const res = await fetch("http://localhost:5000/chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message: fullMessage }),
+        });
+
+        const data = await res.json();
+        const rawText = data.response || "";
+
+        const items = rawText
+          .split(/\n+/)
+          .map((line: string) => line.replace(/^[-*✅\s]+/, "").trim())
+          .filter((line: string) => line.length > 0);
+
+        setChecklistItems(items);
+      } catch (err) {
+        console.error("Error fetching checklist:", err);
+      }
+    };
+
+    fetchChecklist();
+  }, [taskDescription]);
+
+  const visibleItems = expanded ? checklistItems : checklistItems.slice(0, 5);
 
   return (
-    <article className="pt-4 pr-4 pb-6 pl-8 mx-auto w-full text-lg text-black bg-red-400 rounded-[16px] max-md:px-3 max-md:mt-5 max-md:max-w-full">
-      <div className="flex flex-col gap-4">
-        <textarea
-          value={taskDescription}
-          onChange={(e) => setTaskDescription(e.target.value)}
-          placeholder="Enter task description..."
-          className="p-2 border rounded w-full"
-        />
-        <button
-          onClick={handleGenerateTasks}
-          className="px-4 py-2 bg-blue-500 text-black rounded"
-        >
-          Generate Task Breakdown
-        </button>
-      </div>
-      <div className="mt-6">
-        <h2 className="text-xl font-bold mb-4">Task Breakdown</h2>
-        <ul className="list-disc pl-5 space-y-2">
-          {tasks.map((task, index) => (
-            <li key={index}>{task}</li>
+    <article className="pt-4 pr-4 pb-6 pl-8 mx-auto w-full text-lg text-white bg-red-400 rounded-[16px] max-md:px-3 max-md:mt-5 max-md:max-w-full">
+      <div className="flex shrink-0 mt-6 max-w-full bg-white bg-opacity-10 p-4 rounded-[16px] w-[460px] max-md:mt-5">
+        <ul className="list-disc space-y-3 pl-5">
+          {visibleItems.map((item, index) => (
+            <li key={index}>
+              ✅ <strong>{item}</strong>
+            </li>
           ))}
         </ul>
       </div>
+
+      {checklistItems.length > 5 && (
+        <button
+          className="mt-4 text-sm text-white underline"
+          onClick={() => setExpanded(!expanded)}
+        >
+          {expanded ? "Read Less" : "Read More"}
+        </button>
+      )}
     </article>
   );
 };

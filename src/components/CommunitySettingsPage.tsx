@@ -1,21 +1,24 @@
 "use client";
 
 import * as React from "react";
+import { useNavigate } from "react-router-dom";
 import { BackgroundLayout } from "./BackgroundLayout";
 import { SettingsCard } from "./SettingsCard";
 import { NavigationButtons } from "./NavigationButtons";
 
 const CommunitySettingsPage: React.FC = () => {
+  const navigate = useNavigate();
+
   const handleOptionSelect = (option: string) => {
     console.log("Selected option:", option);
   };
 
   const handleNext = () => {
-    console.log("Next clicked");
+    navigate("/SocialSupportSettings");
   };
 
   const handleSkip = () => {
-    console.log("Skip clicked");
+    navigate("/SocialSupportSettings");
   };
 
   return (
